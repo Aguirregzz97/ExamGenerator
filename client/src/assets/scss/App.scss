@@ -1,0 +1,27 @@
+$bg-color: yellow;
+$border-color: red;
+
+.app {
+  font-family: helvetica, arial, sans-serif;
+  padding: 2em;
+  border: 5px solid $border-color;
+  font-weight: 300;
+  font-size: 14px;
+
+  p {
+    background-color: $bg-color;
+  }
+}
+
+#navBackground {
+  color: black;
+}
+
+#navTitle {
+  font-size: 30px;
+}
+
+.nav-item {
+  padding-right: 10px;
+  font-size: 19px;
+}
