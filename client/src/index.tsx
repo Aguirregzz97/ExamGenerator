@@ -13,6 +13,9 @@ import * as ReactDOM from 'react-dom'
 import history from './components/history'
 import router from './components/router'
 import routes from './components/routes'
+import { initializeIcons } from '@uifabric/icons'
+
+initializeIcons()
 
 const container = document.getElementById('root')
 function renderComponent(component) {

@@ -82,6 +82,7 @@
     "jquery": "^3.3.1",
     "lodash": "^4.17.10",
     "match-sorter": "^2.2.3",
+    "office-ui-fabric-react": "^6.76.0",
     "path-to-regexp": "^2.2.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",

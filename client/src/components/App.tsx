@@ -1,6 +1,7 @@
 import * as React from 'react'
 import './../assets/scss/App.scss'
 import Home from './Home'
+import { Fabric } from 'office-ui-fabric-react'
 
 
 type State = {
@@ -25,7 +26,9 @@ export default class App extends React.Component<Props, State> {
   render() {
     return (
       <div>
-        <Home />
+        <Fabric>
+          <Home />
+        </Fabric>
       </div>
     )
   }
