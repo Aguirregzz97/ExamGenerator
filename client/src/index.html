@@ -13,7 +13,7 @@
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <title>Etisys Online</title>
+    <title>Geneval</title>
 </head>
 
 <body>
@@ -21,29 +21,5 @@
 </body>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<script>
-    $('.dropdown-submenu > a').on("click", function (e) {
-        var submenu = $(this);
-        $('.dropdown-submenu .dropdown-menu').removeClass('show');
-        submenu.next('.dropdown-menu').addClass('show');
-        e.stopPropagation();
-    });
-
-    $('.dropdown').on("hidden.bs.dropdown", function () {
-        // hide any open menus when parent closes
-        $('.dropdown-menu.show').removeClass('show');
-    });
-</script>
-<script>
-    $(function () {
-        $('[data-toggle="popover"]').popover()
-    })
-
-    $(function () {
-        $('.example-popover').popover({
-            container: 'body'
-        })
-    })
-</script>
 
 </html>

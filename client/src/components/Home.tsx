@@ -1,5 +1,6 @@
 import * as React from 'react'
-import Navbar from './Navbar'
+import NavbarC from './NavbarC'
+import GetStarted from './GetStarted';
 
 type State = {
 }
@@ -16,7 +17,8 @@ export default class Home extends React.Component<Props, State> {
     render() {
         return (
             <div>
-                <Navbar/>
+                <NavbarC/>
+                <GetStarted/>
             </div>
         )
     }

@@ -13,8 +13,19 @@ $border-color: red;
   }
 }
 
-#navBackground {
-  color: black;
+.navItem {
+  color: white;
+  transition: 1s;
+  font-family: sans-serif;
+  font-size: 16px;
+}
+
+.blackBack {
+  background-color: black;
+}
+
+.colorBlue {
+  background-color: #244173;
 }
 
 #navTitle {
