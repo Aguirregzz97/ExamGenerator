@@ -1,10 +1,12 @@
 import * as React from 'react'
 import NavbarC from './NavbarC'
+import QuestionStorage, { IQuestionModel, IPossibleAnswer } from '../Shared/QuestionStorage'
 
 type State = {
     username: string,
     password: string,
-    userAuthenticated: boolean
+    userAuthenticated: boolean,
+    questions: IQuestionModel[]
 }
 
 type Props = {
@@ -17,7 +19,8 @@ export default class Login extends React.Component<Props, State> {
         this.state = {
             username: null,
             password: null,
-            userAuthenticated: false
+            userAuthenticated: false,
+            questions: []
         }
     }
 
@@ -37,6 +40,11 @@ export default class Login extends React.Component<Props, State> {
         if (this.state.username === 'admin' && this.state.password === 'admin') {
             this.setState({
                 userAuthenticated: true
+            }, async () => {
+                const questions = await QuestionStorage.getQuestions(this.state.username)
+                this.setState({
+                    questions: questions
+                })
             })
         }
         else {
@@ -44,11 +52,44 @@ export default class Login extends React.Component<Props, State> {
         }
     }
 
+    addQuestion = () => {
+        const questionToAdd: IQuestionModel = {
+            question: 'HARDCODED QUESTION',
+            possibleAnswers: [
+                {answer: 'Answer1', isCorrect: true},
+                {answer: 'Answer2'},
+                {answer: 'Answer3'},
+            ]
+        }
+
+        const newQuestions = [...this.state.questions, questionToAdd ]
+        this.setState({
+            questions: newQuestions
+        }, async () => {
+            await QuestionStorage.storeQuestions(this.state.questions, this.state.username)
+        })
+    }
+
+    renderQuestions = () => {
+        return this.state.questions.map((questionModel: IQuestionModel) => {
+            return ( <div>
+                { questionModel.question }
+                <ul>
+                { questionModel.possibleAnswers.map((possibleAnswer: IPossibleAnswer) => {
+                    return ( <li>{ possibleAnswer.answer } { possibleAnswer.isCorrect ? 'CORRECT ONE' : '' } </li> )
+                }) }
+                </ul>
+            </div> )
+        })
+    }
 
     render() {
         if (this.state.userAuthenticated) {
             return (
-                <h1>acces granted</h1>
+                <>
+                    <button onClick={ this.addQuestion }>Add question</button>
+                    { this.renderQuestions() }
+                </>
             )
         }
         return (
