@@ -1,6 +1,6 @@
 import * as React from 'react'
 import NavbarC from './NavbarC'
-import GetStarted from './GetStarted';
+import GetStarted from './GetStarted'
 
 type State = {
 }
@@ -17,7 +17,6 @@ export default class Home extends React.Component<Props, State> {
     render() {
         return (
             <div>
-                <NavbarC/>
                 <GetStarted/>
             </div>
         )

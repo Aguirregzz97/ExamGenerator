@@ -35,18 +35,18 @@ export default class NavbarC extends React.Component<Props, State> {
         return (
             <div>
                 <Navbar className='blackBack' expand='md'>
-                    <NavbarBrand className='navItem' href='/'>GENEVAL</NavbarBrand>
+                    <NavbarBrand style={{ fontFamily: 'Montserrat' }} className='navItem' href='/'>GENEVAL</NavbarBrand>
                     <NavbarToggler className='whiteColor' onClick={this.toggle} />
                     <Collapse color='light' isOpen={this.state.isOpen} navbar>
                         <Nav className='ml-auto' navbar>
                             <NavItem>
-                                <NavLink className='navItem' href='/components/'>EXAMS</NavLink>
+                                <NavLink style={{ fontFamily: 'Montserrat' }} className='navItem' href='/Exams'>EXAMS</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink className='navItem' href='/components/'>QUESTIONS</NavLink>
+                                <NavLink style={{ fontFamily: 'Montserrat' }} className='navItem' href='/Questions'>QUESTIONS</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink className='navItem' href='https://github.com/reactstrap/reactstrap'>USER</NavLink>
+                                <NavLink style={{ fontFamily: 'Montserrat' }} className='navItem' href='/Login'>LOGIN</NavLink>
                             </NavItem>
                         </Nav>
                     </Collapse>

@@ -2,6 +2,7 @@ import * as React from 'react'
 import './../assets/scss/App.scss'
 import Home from './Home'
 import { Fabric } from 'office-ui-fabric-react'
+import NavbarC from './NavbarC'
 
 
 type State = {
@@ -27,6 +28,7 @@ export default class App extends React.Component<Props, State> {
     return (
       <div>
         <Fabric>
+          <NavbarC/>
           <Home />
         </Fabric>
       </div>
