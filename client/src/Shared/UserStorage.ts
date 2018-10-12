@@ -7,12 +7,12 @@ export interface IUserModel {
 
 export default class UserStroage {
 
-    private static getCacheKey(userId: number): string {
-        return 'UserID:' + userId
+    private static getCacheKey(): string {
+        return 'Users'
     }
 
-    public static getUsers(userId: number): Promise<IUserModel[]> {
-        const s: string = localStorage.getItem(UserStroage.getCacheKey(userId))
+    public static getUsers(): Promise<IUserModel[]> {
+        const s: string = localStorage.getItem(UserStroage.getCacheKey())
         if (!s) {
             return Promise.resolve([])
         }
@@ -20,9 +20,9 @@ export default class UserStroage {
         return Promise.resolve(users)
     }
 
-    public static storeUsers(user: IUserModel, userId: number) {
+    public static storeUsers(user: IUserModel) {
         const s: string = JSON.stringify(user)
-        localStorage.setItem(UserStroage.getCacheKey(userId), s)
+        localStorage.setItem(UserStroage.getCacheKey(), s)
         return Promise.resolve
     }
 
