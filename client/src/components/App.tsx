@@ -28,7 +28,7 @@ export default class App extends React.Component<Props, State> {
     return (
       <div>
         <Fabric>
-          <NavbarC/>
+          <NavbarC currentUser={null}/>
           <Home />
         </Fabric>
       </div>

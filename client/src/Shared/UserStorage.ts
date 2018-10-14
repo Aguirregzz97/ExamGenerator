@@ -20,10 +20,10 @@ export default class UserStroage {
         return Promise.resolve(users)
     }
 
-    public static storeUsers(user: IUserModel) {
+    public static storeUsers(user: IUserModel[]): Promise<void> {
         const s: string = JSON.stringify(user)
         localStorage.setItem(UserStroage.getCacheKey(), s)
-        return Promise.resolve
+        return Promise.resolve()
     }
 
 }

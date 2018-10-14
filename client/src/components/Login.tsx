@@ -5,6 +5,7 @@ import { PrimaryButton } from 'office-ui-fabric-react/lib/Button'
 import swal from 'sweetalert2'
 import Exams from './Exams'
 import userStorage, { IUserModel } from '../Shared/UserStorage'
+import { BrowserRouter, Route, Redirect } from 'react-router-dom'
 import UserStroage from '../Shared/UserStorage'
 
 
@@ -104,13 +105,11 @@ export default class Register extends React.Component<Props, State> {
 
     render() {
         if (this.state.userAuthenticated) {
-            return (
-                <Exams currentUser={this.state.users[this.state.currentId]} />
-            )
+            return <Exams currentUser={this.state.users[this.state.currentId]}/>
         }
         return (
             <div>
-                <NavbarC />
+                <NavbarC currentUser={null} />
                 <h1 style={{ marginTop: '40px', marginBottom: '35px', color: '#244173' }} className='text-center'>Login</h1>
                 <form>
                     <div className='row'>

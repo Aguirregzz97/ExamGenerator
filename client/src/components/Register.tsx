@@ -104,7 +104,7 @@ export default class Register extends React.Component<Props, State> {
         }
         return (
             <div>
-                <NavbarC />
+                <NavbarC currentUser={null}/>
                 <h1 style={{ marginTop: '40px', marginBottom: '35px', color: '#244173' }} className='text-center'>Register</h1>
                 <form>
                     <div className='row'>
