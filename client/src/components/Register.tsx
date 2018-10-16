@@ -6,7 +6,7 @@ import swal from 'sweetalert2'
 import Exams from './Exams'
 import userStorage, { IUserModel } from '../Shared/UserStorage'
 import UserStroage from '../Shared/UserStorage'
-import CurrentUserStorage from '../Shared/CurrentUserStorage';
+import CurrentUserStorage from '../Shared/CurrentUserStorage'
 
 
 export interface ITeachingBubbleCondensedExampleState {
