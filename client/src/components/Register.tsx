@@ -6,6 +6,7 @@ import swal from 'sweetalert2'
 import Exams from './Exams'
 import userStorage, { IUserModel } from '../Shared/UserStorage'
 import UserStroage from '../Shared/UserStorage'
+import CurrentUserStorage from '../Shared/CurrentUserStorage';
 
 
 export interface ITeachingBubbleCondensedExampleState {
@@ -80,6 +81,7 @@ export default class Register extends React.Component<Props, State> {
             currentId: userToAdd.id
         }, async () => {
             await UserStroage.storeUsers(this.state.users)
+            await CurrentUserStorage.storeCurrentUser(userToAdd)
         })
         swal({
             type: 'success',
@@ -95,12 +97,13 @@ export default class Register extends React.Component<Props, State> {
         })
     }
 
+    goToExams = () => {
+        window.location.href = '/Exams'
+    }
 
     render() {
         if (this.state.userAuthenticated) {
-            return (
-                <Exams currentUser={this.state.users[this.state.currentId]} />
-            )
+            this.goToExams()
         }
         return (
             <div>

@@ -6,6 +6,10 @@ export default class CurrentUserStorage {
         return 'CurrentUser'
     }
 
+    public static removeCurrentUser(): void {
+        window.localStorage.removeItem(this.getCacheKey())
+    }
+
     public static getUser(): Promise<IUserModel> {
         const s: string = localStorage.getItem(CurrentUserStorage.getCacheKey())
         if (!s) {

@@ -72,12 +72,11 @@ export default class Register extends React.Component<Props, State> {
         this.state.users.forEach(element => {
             if (element.username === this.state.username && element.password === this.state.password) {
                 foundUser = true
-                async () => {
-                    await CurrentUserStorage.storeCurrentUser(element)
-                }
                 this.setState({
                     userAuthenticated: true,
                     currentId: element.id,
+                }, async () => {
+                    await CurrentUserStorage.storeCurrentUser(element)
                 })
                 swal({
                     type: 'success',
@@ -104,10 +103,14 @@ export default class Register extends React.Component<Props, State> {
         })
     }
 
+    goToExams = () => {
+        window.location.href = '/Exams'
+    }
+
 
     render() {
         if (this.state.userAuthenticated) {
-            return <Exams currentUser={this.state.users[this.state.currentId]}/>
+            this.goToExams()
         }
         return (
             <div>

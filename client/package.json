@@ -90,7 +90,7 @@
     "react-popper": "^1.0.2",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
-    "react-spinners": "^0.4.5",
+    "react-spinners": "^0.4.7",
     "react-stonecutter": "^0.3.9",
     "react-table": "^6.8.6",
     "reactstrap": "^6.4.0",

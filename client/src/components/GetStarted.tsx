@@ -1,11 +1,14 @@
 import * as React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { IUserModel } from '../Shared/UserStorage'
+import CurrentUserStorage from '../Shared/CurrentUserStorage'
 
 
 const examImg = require('./../assets/img/Exam.png')
 
 
 type State = {
+    currentUser: IUserModel
 }
 
 type Props = {
@@ -13,14 +16,28 @@ type Props = {
 
 export default class GetStarted extends React.Component<Props, State> {
 
-    componentDidMount() {
-    }
 
-    componentWillUnmount() {
-    }
 
     constructor(props) {
         super(props)
+        this.state = {
+            currentUser: null
+        }
+    }
+
+    async componentDidMount() {
+        const currentUserC: IUserModel = await CurrentUserStorage.getUser()
+        this.setState({
+            currentUser: currentUserC
+        })
+    }
+
+    getStarted = () => {
+        if (this.state.currentUser !== undefined) {
+            window.location.href = '/Exams'
+        } else {
+            window.location.href = '/Login'
+        }
     }
 
     render() {
@@ -29,7 +46,7 @@ export default class GetStarted extends React.Component<Props, State> {
                 <div className='colorBlue' style={{ height: '300px' }}>
                     <h1 style={{ color: 'white', fontFamily: 'Montserrat', fontSize: '33px', paddingTop: '50px', fontWeight: 'bold' }} className='text-center'>Generating exams has never been easier</h1>
                     <div className='text-center'>
-                        <a href='/Login'><button className='text-center btnBackBlue'>Get started</button></a>
+                        <button onClick={this.getStarted} className='text-center btnBackBlue'>Get started</button>
                     </div>
                 </div>
                 <div style={{ height: '300px' }} >

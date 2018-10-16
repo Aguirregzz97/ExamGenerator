@@ -10,6 +10,7 @@ const routes = [
   { path: '/Login', action: () => <Login />},
   { path: '/Register', action: () => <Register />},
   { path: '/User', action: () => <User />},
+  { path: '/Exams', action: () => <Exams />},
 ]
 
 export default routes

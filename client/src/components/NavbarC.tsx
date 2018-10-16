@@ -8,6 +8,10 @@ import {
     Nav,
     NavItem,
     NavLink,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
 } from 'reactstrap'
 import CurrentUserStorage from '../Shared/CurrentUserStorage'
 
@@ -30,7 +34,7 @@ export default class NavbarC extends React.Component<Props, State> {
         }
     }
 
-    async componentDidMount () {
+    async componentDidMount() {
         const currentUser: IUserModel = await CurrentUserStorage.getUser()
         this.setState({
             currentUserLoggedIn: currentUser
@@ -43,18 +47,33 @@ export default class NavbarC extends React.Component<Props, State> {
         })
     }
 
+    logout = () => {
+        CurrentUserStorage.removeCurrentUser()
+        window.location.reload()
+    }
+
     render() {
         let userBlock
-        if (this.state.currentUserLoggedIn === undefined) {
+        if (this.state.currentUserLoggedIn === undefined || this.state.currentUserLoggedIn === null) {
             userBlock =
                 <NavItem>
                     <NavLink style={{ fontFamily: 'Montserrat' }} className='navItem' href='/Login'>LOGIN</NavLink>
                 </NavItem>
         } else {
             userBlock =
-                <NavItem>
-                    <NavLink style={{ fontFamily: 'Montserrat' }} className='navItem text-uppercase' href='/User'>{this.state.currentUserLoggedIn}</NavLink>
-                </NavItem>
+                <UncontrolledDropdown nav inNavbar>
+                    <DropdownToggle nav caret style={{ fontFamily: 'Montserrat' }} className='navItem text-uppercase'>
+                        {this.state.currentUserLoggedIn.username}
+                    </DropdownToggle>
+                    <DropdownMenu right>
+                        <DropdownItem href='/User'>
+                            My account
+                    </DropdownItem>
+                        <DropdownItem onClick={this.logout}>
+                            Log out
+                    </DropdownItem>
+                    </DropdownMenu>
+                </UncontrolledDropdown>
         }
         return (
             <div>
