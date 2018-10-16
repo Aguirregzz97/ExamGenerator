@@ -18,7 +18,7 @@ export default class Exams extends React.Component<Props, State> {
     render() {
         return (
             <div>
-                <NavbarC currentUser={this.props.currentUser}/>
+                <NavbarC />
             </div>
         )
     }
