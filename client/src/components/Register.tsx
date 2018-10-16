@@ -53,7 +53,7 @@ export default class Register extends React.Component<Props, State> {
         })
     }
 
-    submitedLogin = (event) => {
+    submitedRegister = (event) => {
         event.preventDefault()
         if (this.state.username.length < 5 || this.state.password.length < 5) {
             this.setState({
@@ -61,25 +61,25 @@ export default class Register extends React.Component<Props, State> {
             })
             return
         }
+        let usersC: IUserModel[]
+        async () => {
+            usersC = await userStorage.getUsers()
+        }
         this.setState({
+            users: usersC,
             userAuthenticated: true,
+        })
+        const userToAdd: IUserModel = {
+            id: this.state.users.length,
+            username: this.state.username,
+            password: this.state.password
+        }
+        const newUsers = [...this.state.users, userToAdd]
+        this.setState({
+            users: newUsers,
+            currentId: userToAdd.id
         }, async () => {
-            const usersC = await userStorage.getUsers()
-            this.setState({
-                users: usersC
-            })
-            const userToAdd: IUserModel = {
-                id: this.state.users.length,
-                username: this.state.username,
-                password: this.state.password
-            }
-            const newUsers = [...this.state.users, userToAdd]
-            this.setState({
-                users: newUsers,
-                currentId: userToAdd.id
-            }, async() => {
-                await UserStroage.storeUsers(this.state.users)
-            })
+            await UserStroage.storeUsers(this.state.users)
         })
         swal({
             type: 'success',
@@ -99,12 +99,12 @@ export default class Register extends React.Component<Props, State> {
     render() {
         if (this.state.userAuthenticated) {
             return (
-                <Exams currentUser={this.state.users[this.state.currentId]}/>
+                <Exams currentUser={this.state.users[this.state.currentId]} />
             )
         }
         return (
             <div>
-                <NavbarC currentUser={null}/>
+                <NavbarC currentUser={null} />
                 <h1 style={{ marginTop: '40px', marginBottom: '35px', color: '#244173' }} className='text-center'>Register</h1>
                 <form>
                     <div className='row'>
@@ -129,7 +129,7 @@ export default class Register extends React.Component<Props, State> {
                         >
                             <PrimaryButton
                                 type='submit'
-                                onClick={this.submitedLogin}
+                                onClick={this.submitedRegister}
                                 text='Register'
                                 style={{ fontSize: '18px', height: '40px' }}
                             />

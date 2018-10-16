@@ -5,8 +5,7 @@ import { PrimaryButton } from 'office-ui-fabric-react/lib/Button'
 import swal from 'sweetalert2'
 import Exams from './Exams'
 import userStorage, { IUserModel } from '../Shared/UserStorage'
-import { BrowserRouter, Route, Redirect } from 'react-router-dom'
-import UserStroage from '../Shared/UserStorage'
+import CurrentUserStorage from '../Shared/CurrentUserStorage'
 
 
 export interface ITeachingBubbleCondensedExampleState {
@@ -73,6 +72,9 @@ export default class Register extends React.Component<Props, State> {
         this.state.users.forEach(element => {
             if (element.username === this.state.username && element.password === this.state.password) {
                 foundUser = true
+                async () => {
+                    await CurrentUserStorage.storeCurrentUser(element)
+                }
                 this.setState({
                     userAuthenticated: true,
                     currentId: element.id,
@@ -109,18 +111,18 @@ export default class Register extends React.Component<Props, State> {
         }
         return (
             <div>
-                <NavbarC currentUser={null} />
+                <NavbarC />
                 <h1 style={{ marginTop: '40px', marginBottom: '35px', color: '#244173' }} className='text-center'>Login</h1>
                 <form>
                     <div className='row'>
                         <div className='col-4'></div>
                         <div className='col-4'>
                             <div className='form-group'>
-                                <label style={{ color: '#244173' }} className=''>New username</label>
+                                <label style={{ color: '#244173' }} className=''>Username</label>
                                 <input type='' className='form-control' aria-describedby='emailHelp' placeholder='Enter username' onChange={this.onChangeUsername} />
                             </div>
                             <div className='form-group'>
-                                <label style={{ color: '#244173' }} className=''>New password</label>
+                                <label style={{ color: '#244173' }} className=''>Password</label>
                                 <input type='password' className='form-control' aria-describedby='emailHelp' placeholder='Enter password' onChange={this.onChangePassword} />
                             </div>
                         </div>

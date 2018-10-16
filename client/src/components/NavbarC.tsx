@@ -9,14 +9,15 @@ import {
     NavItem,
     NavLink,
 } from 'reactstrap'
+import CurrentUserStorage from '../Shared/CurrentUserStorage'
 
 
 type State = {
     isOpen: boolean
+    currentUserLoggedIn: IUserModel
 }
 
 type Props = {
-    currentUser: IUserModel
 }
 
 export default class NavbarC extends React.Component<Props, State> {
@@ -24,8 +25,16 @@ export default class NavbarC extends React.Component<Props, State> {
     constructor(props) {
         super(props)
         this.state = {
-            isOpen: false
+            isOpen: false,
+            currentUserLoggedIn: null
         }
+    }
+
+    async componentDidMount () {
+        const currentUser: IUserModel = await CurrentUserStorage.getUser()
+        this.setState({
+            currentUserLoggedIn: currentUser
+        })
     }
 
     toggle = () => {
@@ -36,7 +45,7 @@ export default class NavbarC extends React.Component<Props, State> {
 
     render() {
         let userBlock
-        if (this.props.currentUser === null) {
+        if (this.state.currentUserLoggedIn === undefined) {
             userBlock =
                 <NavItem>
                     <NavLink style={{ fontFamily: 'Montserrat' }} className='navItem' href='/Login'>LOGIN</NavLink>
@@ -44,7 +53,7 @@ export default class NavbarC extends React.Component<Props, State> {
         } else {
             userBlock =
                 <NavItem>
-                    <NavLink style={{ fontFamily: 'Montserrat' }} className='navItem text-uppercase' href='/User'>{this.props.currentUser.username}</NavLink>
+                    <NavLink style={{ fontFamily: 'Montserrat' }} className='navItem text-uppercase' href='/User'>{this.state.currentUserLoggedIn}</NavLink>
                 </NavItem>
         }
         return (
