@@ -76,11 +76,11 @@ export default class NavbarC extends React.Component<Props, State> {
                 </UncontrolledDropdown>
         }
         return (
-            <div>
-                <Navbar className='blackBack' expand='md'>
+            <div style={{ backgroundColor: 'black' }}>
+                <Navbar expand='md'>
                     <NavbarBrand style={{ fontFamily: 'Montserrat' }} className='navItem' href='/'>GENEVAL</NavbarBrand>
                     <NavbarToggler className='whiteColor' onClick={this.toggle} />
-                    <Collapse color='light' isOpen={this.state.isOpen} navbar>
+                    <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className='ml-auto' navbar>
                             <NavItem>
                                 <NavLink style={{ fontFamily: 'Montserrat' }} className='navItem' href='/Exams'>EXAMS</NavLink>
