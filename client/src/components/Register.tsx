@@ -19,7 +19,6 @@ type State = {
     userAuthenticated: boolean,
     isTeachingBubbleVissible: boolean,
     users: IUserModel[],
-    currentId: number
 }
 
 type Props = {
@@ -38,8 +37,14 @@ export default class Register extends React.Component<Props, State> {
             userAuthenticated: false,
             isTeachingBubbleVissible: false,
             users: [],
-            currentId: null
         }
+    }
+
+    async componentDidMount () {
+        const usersC: IUserModel[] = await userStorage.getUsers()
+        this.setState({
+            users: usersC
+        })
     }
 
     onChangeUsername = (event) => {
@@ -62,33 +67,26 @@ export default class Register extends React.Component<Props, State> {
             })
             return
         }
-        let usersC: IUserModel[]
-        async () => {
-            usersC = await userStorage.getUsers()
-        }
-        this.setState({
-            users: usersC,
-            userAuthenticated: true,
-        })
         const userToAdd: IUserModel = {
             id: this.state.users.length,
             username: this.state.username,
             password: this.state.password
         }
         const newUsers = [...this.state.users, userToAdd]
-        this.setState({
-            users: newUsers,
-            currentId: userToAdd.id
+            this.setState({
+            userAuthenticated: true
         }, async () => {
-            await UserStroage.storeUsers(this.state.users)
+            await UserStroage.storeUsers(newUsers)
             await CurrentUserStorage.storeCurrentUser(userToAdd)
+            await swal({
+                type: 'success',
+                title: 'Your account has been created!',
+                showConfirmButton: false,
+                timer: 1500,
+                onClose: () => {window.location.href = '/Exams'}
+            })
         })
-        swal({
-            type: 'success',
-            title: 'Your account has been created!',
-            showConfirmButton: false,
-            timer: 1500
-        })
+
     }
 
     _onDismiss = (ev: any) => {
@@ -97,14 +95,7 @@ export default class Register extends React.Component<Props, State> {
         })
     }
 
-    goToExams = () => {
-        window.location.href = '/Exams'
-    }
-
     render() {
-        if (this.state.userAuthenticated) {
-            this.goToExams()
-        }
         return (
             <div>
                 <NavbarC />

@@ -9,22 +9,12 @@ export interface IPossibleAnswer {
 }
 
 export default class QuestionStorage {
-    private static getCacheKey(userId: string): string {
-        return 'QuestionsArray|' + userId
+    private static getCacheKey() {
     }
 
-    public static getQuestions(userId: string): Promise<IQuestionModel[]> {
-        const s: string = localStorage.getItem(QuestionStorage.getCacheKey(userId))
-        if (!s) {
-            return Promise.resolve([])
-        }
-        const questions: IQuestionModel[] = JSON.parse(s)
-        return Promise.resolve(questions)
+    public static getQuestions() {
     }
 
-    public static storeQuestions(questions: IQuestionModel[], userId: string): Promise<void> {
-        const s: string = JSON.stringify(questions)
-        localStorage.setItem(QuestionStorage.getCacheKey(userId), s)
-        return Promise.resolve()
+    public static storeQuestions() {
     }
 }

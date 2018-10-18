@@ -61,3 +61,13 @@ $border-color: red;
 #examImg {
   width: 200px;
 }
+
+.newSubject {
+  transition: 0.3s;
+}
+
+.newSubject:hover {
+  transition: 0.2s;
+  transform: scale(1.1);
+  cursor: pointer;
+}

@@ -82,7 +82,8 @@ export default class Register extends React.Component<Props, State> {
                     type: 'success',
                     title: 'Welcome to geneval!',
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 1500,
+                    onClose: () => {window.location.href = '/Exams'}
                 })
                 return
             }
@@ -103,15 +104,7 @@ export default class Register extends React.Component<Props, State> {
         })
     }
 
-    goToExams = () => {
-        window.location.href = '/Exams'
-    }
-
-
     render() {
-        if (this.state.userAuthenticated) {
-            this.goToExams()
-        }
         return (
             <div>
                 <NavbarC />
