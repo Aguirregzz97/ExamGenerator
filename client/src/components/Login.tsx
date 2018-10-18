@@ -140,7 +140,7 @@ export default class Register extends React.Component<Props, State> {
                             <PrimaryButton
                                 type='submit'
                                 onClick={this.submitedLogin}
-                                text='Register'
+                                text='Login'
                                 style={{ fontSize: '18px', height: '40px' }}
                             />
                         </span>
