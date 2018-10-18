@@ -163,7 +163,7 @@ export default class Subjects extends React.Component<Props, State> {
                                 return (
                                     <div key={value.id} className='text-center'>
                                     <Router>
-                                        <Link to='/Topics'><span onClick={() => this.goToSubjects(value)} style={{ fontSize: '110px', paddingRight: '5px', paddingLeft: '5px' }} className='fas fa-book newSubject text-center'></span></Link>
+                                        <Link to={{ pathname: '/Topics', state : { fromSubject: 'This is my prop from subject' } }}><span onClick={() => this.goToSubjects(value)} style={{ fontSize: '110px', paddingRight: '5px', paddingLeft: '5px' }} className='fas fa-book newSubject text-center'></span></Link>
                                     </Router>
                                         <span onClick={() => this.deleteSubject(value)} style={{ fontSize: '22px' }} className='trashCan far fa-trash-alt float-right text-center'></span>
                                         <h4 style={{ fontSize: '17px', color: '#244173', paddingTop: '15px', fontFamily: 'Montserrat', fontWeight: 'bold' }} className='text-center'>{value.subjectName}<span onClick={() => this.editSubject(value)} style={{ fontSize: '20px' }} className='editSubject far fa-edit'></span></h4>
