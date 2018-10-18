@@ -64,10 +64,24 @@ $border-color: red;
 
 .newSubject {
   transition: 0.3s;
+  background: none;
+  border: none;
 }
 
 .newSubject:hover {
-  transition: 0.2s;
   transform: scale(1.1);
   cursor: pointer;
+}
+
+.trashCan {
+  transition: 0.3s;
+  background: none;
+  border: none;
+  color: #2f4f4f;
+}
+
+.trashCan:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+  color: red;
 }

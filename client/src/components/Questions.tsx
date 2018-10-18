@@ -22,7 +22,7 @@ export default class Questions extends React.Component<Props, State> {
         super(props)
         this.state = {
             currentUser: null,
-            subjects: null
+            subjects: null,
         }
     }
 
@@ -33,6 +33,23 @@ export default class Questions extends React.Component<Props, State> {
             currentUser: currentUserC,
             subjects: currentSubjectsC
         })
+    }
+
+    deleteSubject = (subject: ISubjectModel) => {
+        swal({
+            title: 'Are you sure?',
+            text: 'You wont be able to revert this!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.value) {
+                {this.state.subjects.forEach((value, index) => {
+                })}
+            }
+          })
     }
 
     createNewSubject = async () => {
@@ -69,11 +86,11 @@ export default class Questions extends React.Component<Props, State> {
                 <div>
                     <NavbarC />
                     <h1 style={{ color: '#244173', fontFamily: 'Montserrat', fontSize: '40px', paddingTop: '30px', fontWeight: 'bold', paddingBottom: '30px' }} className='text-center'>SUBJECTS</h1>
-                    <div style={{ paddingLeft: '130px', paddingRight: '130px' }}>
+                    <div style={{ paddingLeft: '100px', paddingRight: '100px' }}>
                         <GridPage
                             component='ul'
                             columns={5}
-                            columnWidth={240}
+                            columnWidth={200}
                             gutterWidth={15}
                             gutterHeight={20}
                             itemHeight={190}
@@ -85,8 +102,9 @@ export default class Questions extends React.Component<Props, State> {
                             </div>
                             {this.state.subjects.map((value) => {
                                 return (
-                                    <div>
-                                        <button className='newSubject' style={{ background: 'none', border: 'none' }}>
+                                    <div key={value.id} className='text-center'>
+                                        <span onClick={() => this.deleteSubject(value)} style={{  fontSize: '20px' }} className='trashCan far fa-trash-alt float-right text-center   '></span>
+                                        <button className='newSubject'>
                                             <span style={{ color: '#244173', fontSize: '110px' }} className='fas fa-book'></span>
                                         </button>
                                         <h4 style={{ fontSize: '15px', color: '#244173', paddingTop: '15px', fontFamily: 'Montserrat', fontWeight: 'bold' }} className='text-center'>{value.subjectName}</h4>
