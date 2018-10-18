@@ -3,6 +3,7 @@ import './../assets/scss/App.scss'
 import Home from './Home'
 import { Fabric } from 'office-ui-fabric-react'
 import NavbarC from './NavbarC'
+import { Router } from 'react-router-dom'
 
 
 type State = {

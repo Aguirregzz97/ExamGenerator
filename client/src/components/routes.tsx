@@ -4,7 +4,9 @@ import Login from './Login'
 import Register from './Register'
 import User from './User'
 import Exams from './Exams'
-import Questions from './Questions'
+import Subjects from './Subjects'
+import Topics from './Topics'
+
 
 const routes = [
   { path: '/', action: () => <App />},
@@ -12,7 +14,8 @@ const routes = [
   { path: '/Register', action: () => <Register />},
   { path: '/User', action: () => <User />},
   { path: '/Exams', action: () => <Exams />},
-  { path: '/Questions', action: () => <Questions />},
+  { path: '/Subjects', action: () => <Subjects />},
+  { path: '/Topics', action: () => <Topics />},
 ]
 
 export default routes

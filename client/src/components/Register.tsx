@@ -67,8 +67,14 @@ export default class Register extends React.Component<Props, State> {
             })
             return
         }
+        let newID: number = 0
+        this.state.users.forEach(element => {
+            if (element.id >= newID) {
+                newID = element.id + 1
+            }
+        })
         const userToAdd: IUserModel = {
-            id: this.state.users.length,
+            id: newID,
             username: this.state.username,
             password: this.state.password
         }
@@ -83,7 +89,7 @@ export default class Register extends React.Component<Props, State> {
                 title: 'Your account has been created!',
                 showConfirmButton: false,
                 timer: 1500,
-                onClose: () => {window.location.href = '/Exams'}
+                onClose: () => {window.location.href = '/Subjects'}
             })
         })
 

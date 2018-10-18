@@ -19,7 +19,7 @@ export default class TopicStorage {
         return Promise.resolve(topics)
     }
 
-    public static storeSubjects(topics: ITopicModel[], idCurrentUser: number): Promise<void> {
+    public static storeTopics(topics: ITopicModel[], idCurrentUser: number): Promise<void> {
         const s: string = JSON.stringify(topics)
         localStorage.setItem(TopicStorage.getCacheKey(idCurrentUser), s)
         return Promise.resolve()

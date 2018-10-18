@@ -5,24 +5,29 @@ import CurrentUserStorage from '../Shared/CurrentUserStorage'
 import { SpringGrid, makeResponsive } from 'react-stonecutter'
 import SubjectStorage, { ISubjectModel } from '../Shared/SubjectStorage'
 import swal from 'sweetalert2'
+import Topics from './Topics'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 const GridPage = makeResponsive(SpringGrid, { maxWidth: 1920 })
+
 
 type State = {
     currentUser: IUserModel
     subjects: ISubjectModel[]
+    subjectToGo: ISubjectModel
 }
 
 type Props = {
 }
 
-export default class Questions extends React.Component<Props, State> {
+export default class Subjects extends React.Component<Props, State> {
 
     constructor(props) {
         super(props)
         this.state = {
             currentUser: null,
             subjects: null,
+            subjectToGo: null
         }
     }
 
@@ -35,6 +40,39 @@ export default class Questions extends React.Component<Props, State> {
         })
     }
 
+    goToSubjects = (subjectToGoV: ISubjectModel) => {
+        this.setState({
+            subjectToGo: subjectToGoV
+        })
+    }
+
+    editSubject = async (subject: ISubjectModel) => {
+
+        const { value: subjectInput } = await swal({
+            title: 'Input new subject name',
+            input: 'text',
+            inputPlaceholder: 'Enter your new subject!'
+        })
+        if (subjectInput) {
+            this.state.subjects.forEach((element) => {
+                if (element.id === subject.id) {
+                    element.subjectName = subjectInput
+                    SubjectStorage.storeSubjects(this.state.subjects, this.state.currentUser.id)
+                    swal({
+                        type: 'success',
+                        title: 'succesfully chnaged subject name',
+                        text: 'Your subject ' + subject.subjectName + ' has been edited to ' + subjectInput,
+                        timer: 1500,
+                        showConfirmButton: false,
+                        onClose: () => { window.location.reload() }
+                    })
+                }
+            })
+        }
+
+
+    }
+
     deleteSubject = (subject: ISubjectModel) => {
         swal({
             title: 'Are you sure?',
@@ -44,12 +82,26 @@ export default class Questions extends React.Component<Props, State> {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
-          }).then((result) => {
+        }).then((result) => {
             if (result.value) {
-                {this.state.subjects.forEach((value, index) => {
-                })}
+                {
+                    this.state.subjects.forEach((element, index) => {
+                        if (subject.id === element.id) {
+                            this.state.subjects.splice(index, 1)
+                            SubjectStorage.storeSubjects(this.state.subjects, this.state.currentUser.id)
+                            swal({
+                                type: 'success',
+                                title: 'Deleted!',
+                                text: 'Your subject ' + subject.subjectName + ' has ben deleted',
+                                timer: 1500,
+                                showConfirmButton: false,
+                                onClose: () => { window.location.reload() }
+                            })
+                        }
+                    })
+                }
             }
-          })
+        })
     }
 
     createNewSubject = async () => {
@@ -65,8 +117,14 @@ export default class Questions extends React.Component<Props, State> {
                 showConfirmButton: false,
                 timer: 1500
             })
+            let newID: number = 0
+            this.state.subjects.forEach((element) => {
+                if (element.id >= newID) {
+                    newID = element.id + 1
+                }
+            })
             const subjectToAdd: ISubjectModel = {
-                id: this.state.subjects.length,
+                id: newID,
                 subjectName: subjectInput
             }
             const newSubjects = [...this.state.subjects, subjectToAdd]
@@ -76,6 +134,7 @@ export default class Questions extends React.Component<Props, State> {
             window.location.reload()
         }
     }
+
 
     render() {
         if (!this.state.subjects) {
@@ -90,24 +149,24 @@ export default class Questions extends React.Component<Props, State> {
                         <GridPage
                             component='ul'
                             columns={5}
-                            columnWidth={200}
+                            columnWidth={220}
                             gutterWidth={15}
                             gutterHeight={20}
                             itemHeight={190}
                             springConfig={{ stiffness: 170, damping: 13 }}
                         >
                             <div>
-                                <button className='newSubject' onClick={this.createNewSubject} style={{ background: 'none', border: 'none' }}><span style={{ color: '#244173', fontSize: '110px' }} className='far fa-plus-square'></span></button>
+                                <span onClick={this.createNewSubject} style={{ fontSize: '110px' }} className='far fa-plus-square newSubject'></span>
                                 <h4 style={{ fontSize: '20px', color: '#244173', fontFamily: 'Montserrat', fontWeight: 'bold', paddingTop: '15px' }} className='text-center'>new</h4>
                             </div>
                             {this.state.subjects.map((value) => {
                                 return (
                                     <div key={value.id} className='text-center'>
-                                        <span onClick={() => this.deleteSubject(value)} style={{  fontSize: '20px' }} className='trashCan far fa-trash-alt float-right text-center   '></span>
-                                        <button className='newSubject'>
-                                            <span style={{ color: '#244173', fontSize: '110px' }} className='fas fa-book'></span>
-                                        </button>
-                                        <h4 style={{ fontSize: '15px', color: '#244173', paddingTop: '15px', fontFamily: 'Montserrat', fontWeight: 'bold' }} className='text-center'>{value.subjectName}</h4>
+                                    <Router>
+                                        <Link to='/Topics'><span onClick={() => this.goToSubjects(value)} style={{ fontSize: '110px', paddingRight: '5px', paddingLeft: '5px' }} className='fas fa-book newSubject text-center'></span></Link>
+                                    </Router>
+                                        <span onClick={() => this.deleteSubject(value)} style={{ fontSize: '22px' }} className='trashCan far fa-trash-alt float-right text-center'></span>
+                                        <h4 style={{ fontSize: '17px', color: '#244173', paddingTop: '15px', fontFamily: 'Montserrat', fontWeight: 'bold' }} className='text-center'>{value.subjectName}<span onClick={() => this.editSubject(value)} style={{ fontSize: '20px' }} className='editSubject far fa-edit'></span></h4>
                                     </div>
                                 )
                             })}

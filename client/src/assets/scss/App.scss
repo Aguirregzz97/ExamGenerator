@@ -66,22 +66,38 @@ $border-color: red;
   transition: 0.3s;
   background: none;
   border: none;
+  color: #244173;
 }
 
 .newSubject:hover {
-  transform: scale(1.1);
+  transform: scale(1.08);
   cursor: pointer;
+  color: #4169e1;
 }
 
 .trashCan {
+  transition: 0.3s;
+  background: none;
+  color: #2f4f4f;
+}
+
+.trashCan:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+  color: red;
+}
+
+.editSubject {
+  padding-left: 10px;
   transition: 0.3s;
   background: none;
   border: none;
   color: #2f4f4f;
 }
 
-.trashCan:hover {
-  transform: scale(1.1);
+.editSubject:hover {
+  transform: scale(1.15);
   cursor: pointer;
-  color: red;
+  color: green;
 }
+
