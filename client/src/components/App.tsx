@@ -3,7 +3,8 @@ import './../assets/scss/App.scss'
 import Home from './Home'
 import { Fabric } from 'office-ui-fabric-react'
 import NavbarC from './NavbarC'
-import { Router } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import Topics from './Topics'
 
 
 type State = {
@@ -12,6 +13,7 @@ type State = {
 
 type Props = {
 }
+
 
 export default class App extends React.Component<Props, State> {
 
@@ -27,12 +29,13 @@ export default class App extends React.Component<Props, State> {
 
   render() {
     return (
-      <div>
-        <Fabric>
-          <NavbarC />
-          <Home />
-        </Fabric>
-      </div>
+      <Router>
+                <Route path='/subjects/:id' component={Topics} />
+        <div>
+            <NavbarC />
+            <Home />
+        </div>
+      </Router>
     )
   }
 }

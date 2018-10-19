@@ -6,6 +6,7 @@ import TopicStorage, { ITopicModel } from '../Shared/TopicStorage'
 import { SpringGrid, makeResponsive } from 'react-stonecutter'
 import swal from 'sweetalert2'
 import CurrentUserStorage from '../Shared/CurrentUserStorage'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 
 const GridPage = makeResponsive(SpringGrid, { maxWidth: 1920 })
@@ -16,9 +17,25 @@ type State = {
     topics: ITopicModel[]
 }
 
-type Props = {
-    currentSubject: ISubjectModel
-}
+interface MatchParams {
+    id: number
+ }
+
+ interface Props extends RouteComponentProps<MatchParams> {
+ }
+
+ export interface RouteComponentProps<P> {
+  match: match<P>
+  staticContext?: any
+ }
+
+ // tslint:disable-next-line:class-name
+ export interface match<P> {
+  params: P
+  isExact: boolean
+  path: string
+  url: string
+ }
 
 export default class Home extends React.Component<Props, State> {
 
@@ -48,7 +65,7 @@ export default class Home extends React.Component<Props, State> {
         if (topicInput) {
             await swal({
                 type: 'success',
-                title: 'Your topic inside ' + this.props.currentSubject.subjectName + ' subject was created!',
+                title: 'Your topic was created!',
                 showConfirmButton: false,
                 timer: 2000
             })
@@ -60,7 +77,7 @@ export default class Home extends React.Component<Props, State> {
             })
             const topicToAdd: ITopicModel = {
                 id: newID,
-                idSubject: this.props.currentSubject.id,
+                idSubject: 1,
                 topicName: topicInput
             }
             const newTopics = [...this.state.topics, topicToAdd]
@@ -78,10 +95,11 @@ export default class Home extends React.Component<Props, State> {
     }
 
     render() {
+        console.log(this.props.match.params)
         return (
             <div>
                 <NavbarC />
-                <h1 style={{ color: '#244173', fontFamily: 'Montserrat', fontSize: '40px', paddingTop: '30px', fontWeight: 'bold', paddingBottom: '30px' }} className='text-center'>{this.props.currentSubject.subjectName}</h1>
+                <h1 style={{ color: '#244173', fontFamily: 'Montserrat', fontSize: '40px', paddingTop: '30px', fontWeight: 'bold', paddingBottom: '30px' }} className='text-center'>subjectName</h1>
                     <div style={{ paddingLeft: '100px', paddingRight: '100px' }}>
                         <GridPage
                             component='ul'
@@ -97,7 +115,7 @@ export default class Home extends React.Component<Props, State> {
                                 <h4 style={{ fontSize: '20px', color: '#244173', fontFamily: 'Montserrat', fontWeight: 'bold', paddingTop: '15px' }} className='text-center'>new</h4>
                             </div>
                             {this.state.topics.map((value) => {
-                                if (this.props.currentSubject.id === value.idSubject)
+                                if (1 === value.idSubject)
                                 return (
                                     <div key={value.id} className='text-center'>
                                         <span onClick={() => this.deleteTopic(value)} style={{  fontSize: '22px' }} className='trashCan far fa-trash-alt float-right text-center'></span>

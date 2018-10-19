@@ -14,7 +14,6 @@ const GridPage = makeResponsive(SpringGrid, { maxWidth: 1920 })
 type State = {
     currentUser: IUserModel
     subjects: ISubjectModel[]
-    subjectToGo: ISubjectModel
 }
 
 type Props = {
@@ -27,7 +26,6 @@ export default class Subjects extends React.Component<Props, State> {
         this.state = {
             currentUser: null,
             subjects: null,
-            subjectToGo: null
         }
     }
 
@@ -40,11 +38,6 @@ export default class Subjects extends React.Component<Props, State> {
         })
     }
 
-    goToSubjects = (subjectToGoV: ISubjectModel) => {
-        this.setState({
-            subjectToGo: subjectToGoV
-        })
-    }
 
     editSubject = async (subject: ISubjectModel) => {
 
@@ -162,9 +155,7 @@ export default class Subjects extends React.Component<Props, State> {
                             {this.state.subjects.map((value) => {
                                 return (
                                     <div key={value.id} className='text-center'>
-                                    <Router>
-                                        <Link to={{ pathname: '/Topics', state : { fromSubject: 'This is my prop from subject' } }}><span onClick={() => this.goToSubjects(value)} style={{ fontSize: '110px', paddingRight: '5px', paddingLeft: '5px' }} className='fas fa-book newSubject text-center'></span></Link>
-                                    </Router>
+                                        <a href={'/subjects/:' + value.id} ><span style={{ fontSize: '110px', paddingRight: '5px', paddingLeft: '5px' }} className='fas fa-book newSubject text-center'></span></a>
                                         <span onClick={() => this.deleteSubject(value)} style={{ fontSize: '22px' }} className='trashCan far fa-trash-alt float-right text-center'></span>
                                         <h4 style={{ fontSize: '17px', color: '#244173', paddingTop: '15px', fontFamily: 'Montserrat', fontWeight: 'bold' }} className='text-center'>{value.subjectName}<span onClick={() => this.editSubject(value)} style={{ fontSize: '20px' }} className='editSubject far fa-edit'></span></h4>
                                     </div>

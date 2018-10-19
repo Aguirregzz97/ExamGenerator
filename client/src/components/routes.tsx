@@ -15,7 +15,7 @@ const routes = [
   { path: '/User', action: () => <User />},
   { path: '/Exams', action: () => <Exams />},
   { path: '/Subjects', action: () => <Subjects />},
-  { path: '/Topics', action: () => <Topics />},
+  { path: '/Subjects/:id', action: () => <Topics />},
 ]
 
 export default routes
