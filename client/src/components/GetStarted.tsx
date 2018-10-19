@@ -2,6 +2,7 @@ import * as React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { IUserModel } from '../Shared/UserStorage'
 import CurrentUserStorage from '../Shared/CurrentUserStorage'
+import NavbarC from './NavbarC'
 
 
 const examImg = require('./../assets/img/Exam.png')
@@ -43,6 +44,7 @@ export default class GetStarted extends React.Component<Props, State> {
     render() {
         return (
             <div>
+                <NavbarC/>
                 <div className='colorBlue' style={{ height: '300px' }}>
                     <h1 style={{ color: 'white', fontFamily: 'Montserrat', fontSize: '33px', paddingTop: '50px', fontWeight: 'bold' }} className='text-center'>Generating exams has never been easier</h1>
                     <div className='text-center'>

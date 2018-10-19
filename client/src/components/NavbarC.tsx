@@ -14,6 +14,7 @@ import {
     DropdownItem
 } from 'reactstrap'
 import CurrentUserStorage from '../Shared/CurrentUserStorage'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 
 type State = {
@@ -57,12 +58,13 @@ export default class NavbarC extends React.Component<Props, State> {
         if (this.state.currentUserLoggedIn === undefined || this.state.currentUserLoggedIn === null) {
             userBlock =
                 <NavItem>
-                    <NavLink style={{ fontFamily: 'Montserrat' }} className='navItem' href='/Login'>LOGIN</NavLink>
+                    <Link style={{ fontFamily: 'Montserrat' }} className='navItem nav-link' to='/Login'>LOGIN</Link>
                 </NavItem>
         } else {
             userBlock =
                 <UncontrolledDropdown nav inNavbar>
                     <DropdownToggle nav caret style={{ fontFamily: 'Montserrat' }} className='navItem text-uppercase'>
+                    <i style={{ fontSize: '24px', paddingRight: '10px' }} className='fas fa-user-circle text-center'></i>
                         {this.state.currentUserLoggedIn.username}
                     </DropdownToggle>
                     <DropdownMenu right>
@@ -78,15 +80,15 @@ export default class NavbarC extends React.Component<Props, State> {
         return (
             <div style={{ backgroundColor: 'black' }}>
                 <Navbar expand='md'>
-                    <NavbarBrand style={{ fontFamily: 'Montserrat' }} className='navItem' href='/'>GENEVAL</NavbarBrand>
+                <Link style={{ fontFamily: 'Montserrat', fontSize: '25px' }} className='navItem nav-link' to='/'>GENEVAL<i style={{ fontSize: '30px', paddingLeft: '10px' }} className='fas fa-scroll'></i></Link>
                     <NavbarToggler className='whiteColor' onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className='ml-auto' navbar>
                             <NavItem>
-                                <NavLink style={{ fontFamily: 'Montserrat' }} className='navItem' href='/Exams'>EXAMS</NavLink>
+                            <Link style={{ fontFamily: 'Montserrat' }} className='navItem nav-link' to='/Exams'>EXAMS</Link>
                             </NavItem>
                             <NavItem>
-                                <NavLink style={{ fontFamily: 'Montserrat' }} className='navItem' href='/Subjects'>QUESTIONS</NavLink>
+                                <Link style={{ fontFamily: 'Montserrat' }} className='navItem nav-link' to='/Subjects'>QUESTIONS</Link>
                             </NavItem>
                             {userBlock}
                         </Nav>

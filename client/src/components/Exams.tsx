@@ -30,6 +30,7 @@ export default class Exams extends React.Component<Props, State> {
         return (
             <div>
                 <NavbarC />
+                <h1 style={{ color: '#244173', fontFamily: 'Montserrat', fontSize: '40px', paddingTop: '30px', fontWeight: 'bold', paddingBottom: '30px' }} className='text-center'>EXAMS</h1>
             </div>
         )
     }

@@ -146,7 +146,7 @@ export default class Subjects extends React.Component<Props, State> {
                             gutterWidth={15}
                             gutterHeight={20}
                             itemHeight={190}
-                            springConfig={{ stiffness: 170, damping: 13 }}
+                            springConfig={{ stiffness: 170, damping: 22 }}
                         >
                             <div>
                                 <span onClick={this.createNewSubject} style={{ fontSize: '110px' }} className='far fa-plus-square newSubject'></span>
@@ -155,7 +155,7 @@ export default class Subjects extends React.Component<Props, State> {
                             {this.state.subjects.map((value) => {
                                 return (
                                     <div key={value.id} className='text-center'>
-                                        <a href={'/subjects/:' + value.id} ><span style={{ fontSize: '110px', paddingRight: '5px', paddingLeft: '5px' }} className='fas fa-book newSubject text-center'></span></a>
+                                        <Link to={'/Subjects' + value.id}><span style={{ fontSize: '110px', paddingRight: '5px', paddingLeft: '5px' }} className='fas fa-book newSubject text-center'></span></Link>
                                         <span onClick={() => this.deleteSubject(value)} style={{ fontSize: '22px' }} className='trashCan far fa-trash-alt float-right text-center'></span>
                                         <h4 style={{ fontSize: '17px', color: '#244173', paddingTop: '15px', fontFamily: 'Montserrat', fontWeight: 'bold' }} className='text-center'>{value.subjectName}<span onClick={() => this.editSubject(value)} style={{ fontSize: '20px' }} className='editSubject far fa-edit'></span></h4>
                                     </div>

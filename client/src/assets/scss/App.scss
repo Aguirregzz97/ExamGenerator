@@ -101,3 +101,15 @@ $border-color: red;
   color: green;
 }
 
+.newTopic {
+  transition: 0.3s;
+  background: none;
+  border: none;
+  color: #244173;
+}
+
+.newTopic:hover {
+  transform: scale(1.08);
+  cursor: pointer;
+  color: #4169e1;
+}

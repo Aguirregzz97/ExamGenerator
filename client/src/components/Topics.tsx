@@ -1,7 +1,7 @@
 import * as React from 'react'
 import NavbarC from './NavbarC'
 import { IUserModel } from '../Shared/UserStorage'
-import { ISubjectModel } from '../Shared/SubjectStorage'
+import SubjectStorage, { ISubjectModel } from '../Shared/SubjectStorage'
 import TopicStorage, { ITopicModel } from '../Shared/TopicStorage'
 import { SpringGrid, makeResponsive } from 'react-stonecutter'
 import swal from 'sweetalert2'
@@ -15,6 +15,7 @@ const GridPage = makeResponsive(SpringGrid, { maxWidth: 1920 })
 type State = {
     currentUser: IUserModel
     topics: ITopicModel[]
+    currentSubject: ISubjectModel
 }
 
 interface MatchParams {
@@ -43,16 +44,26 @@ export default class Home extends React.Component<Props, State> {
         super(props)
         this.state = {
             currentUser: null,
-            topics: []
+            topics: [],
+            currentSubject: null
         }
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
         const currentUserC: IUserModel = await CurrentUserStorage.getUser()
         const currentTopicsC: ITopicModel[] = await TopicStorage.getTopics(currentUserC.id)
+        const currentSubjectsC: ISubjectModel[] = await SubjectStorage.getSubjects(currentUserC.id)
+        let currentSubjectC: ISubjectModel
+        let idToCheck: any = this.props.match.params.id
+        currentSubjectsC.forEach(element => {
+            if (element.id === parseInt(idToCheck)) {
+                currentSubjectC = element
+            }
+        })
         this.setState({
             currentUser: currentUserC,
-            topics: currentTopicsC
+            topics: currentTopicsC,
+            currentSubject: currentSubjectC
         })
     }
 
@@ -77,7 +88,7 @@ export default class Home extends React.Component<Props, State> {
             })
             const topicToAdd: ITopicModel = {
                 id: newID,
-                idSubject: 1,
+                idSubject: this.state.currentSubject.id,
                 topicName: topicInput
             }
             const newTopics = [...this.state.topics, topicToAdd]
@@ -95,11 +106,13 @@ export default class Home extends React.Component<Props, State> {
     }
 
     render() {
-        console.log(this.props.match.params)
+        if (!this.state.currentSubject) {
+            return <h1>loading...</h1>
+        }
         return (
             <div>
                 <NavbarC />
-                <h1 style={{ color: '#244173', fontFamily: 'Montserrat', fontSize: '40px', paddingTop: '30px', fontWeight: 'bold', paddingBottom: '30px' }} className='text-center'>subjectName</h1>
+                <h1 style={{ color: '#244173', fontFamily: 'Montserrat', fontSize: '40px', paddingTop: '30px', fontWeight: 'bold', paddingBottom: '30px' }} className='text-center'>{this.state.currentSubject.subjectName}</h1>
                     <div style={{ paddingLeft: '100px', paddingRight: '100px' }}>
                         <GridPage
                             component='ul'
@@ -108,21 +121,19 @@ export default class Home extends React.Component<Props, State> {
                             gutterWidth={15}
                             gutterHeight={20}
                             itemHeight={190}
-                            springConfig={{ stiffness: 170, damping: 13 }}
+                            springConfig={{ stiffness: 170, damping: 22 }}
                         >
                             <div>
                                 <button className='newSubject' onClick={this.createNewTopic} style={{ background: 'none', border: 'none' }}><span style={{ fontSize: '110px' }} className='far fa-plus-square newSubject'></span></button>
                                 <h4 style={{ fontSize: '20px', color: '#244173', fontFamily: 'Montserrat', fontWeight: 'bold', paddingTop: '15px' }} className='text-center'>new</h4>
                             </div>
                             {this.state.topics.map((value) => {
-                                if (1 === value.idSubject)
+                                if (this.state.currentSubject.id === value.idSubject)
                                 return (
                                     <div key={value.id} className='text-center'>
                                         <span onClick={() => this.deleteTopic(value)} style={{  fontSize: '22px' }} className='trashCan far fa-trash-alt float-right text-center'></span>
-                                        <button className='newSubject'>
-                                            <span style={{ fontSize: '110px' }} className='fas fa-file-alt'></span>
-                                        </button>
-                                        <h4 style={{ fontSize: '17px', color: '#244173', paddingTop: '15px', fontFamily: 'Montserrat', fontWeight: 'bold' }} className='text-center'>{value.topicName}<span onClick={() => this.editTopic(value)} style={{  fontSize: '20px' }} className='editSubject far fa-edit'></span></h4>
+                                            <span style={{ fontSize: '110px' }} className='fas fa-file-alt newTopic'></span>
+                                        <h4 style={{ fontSize: '17px', color: '#244173', paddingTop: '15px', fontFamily: 'Montserrat', fontWeight: 'bold' }} className='text-center'>{value.topicName}<span onClick={() => this.editTopic(value)} style={{ fontSize: '20px' }} className='editSubject far fa-edit'></span></h4>
                                     </div>
                                 )
                             })}

@@ -1,10 +1,15 @@
 import * as React from 'react'
 import './../assets/scss/App.scss'
-import Home from './Home'
-import { Fabric } from 'office-ui-fabric-react'
 import NavbarC from './NavbarC'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import GetStarted from './GetStarted'
+import Login from './Login'
+import Register from './Register'
+import Subjects from './Subjects'
 import Topics from './Topics'
+import { Switch, Route } from 'react-router-dom'
+import Exams from './Exams'
+import User from './User'
+
 
 
 type State = {
@@ -14,6 +19,19 @@ type State = {
 type Props = {
 }
 
+const Main = () => (
+  <main>
+    <Switch>
+      <Route exact path='/' component={GetStarted} />
+      <Route path='/Login' component={Login} />
+      <Route path='/User' component={User} />
+      <Route path='/Exams' component={Exams} />
+      <Route path='/Register' component={Register} />
+      <Route path='/Subjects' component={Subjects} />
+      <Route path='/Subjects:id' component={Topics} />
+    </Switch>
+  </main>
+)
 
 export default class App extends React.Component<Props, State> {
 
@@ -29,13 +47,9 @@ export default class App extends React.Component<Props, State> {
 
   render() {
     return (
-      <Router>
-                <Route path='/subjects/:id' component={Topics} />
-        <div>
-            <NavbarC />
-            <Home />
-        </div>
-      </Router>
+      <div>
+        <Main />
+      </div>
     )
   }
 }
