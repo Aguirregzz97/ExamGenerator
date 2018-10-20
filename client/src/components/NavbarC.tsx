@@ -50,7 +50,7 @@ export default class NavbarC extends React.Component<Props, State> {
 
     logout = () => {
         CurrentUserStorage.removeCurrentUser()
-        window.location.reload()
+        window.location.href = '/'
     }
 
     render() {

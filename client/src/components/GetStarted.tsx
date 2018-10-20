@@ -44,11 +44,12 @@ export default class GetStarted extends React.Component<Props, State> {
     render() {
         return (
             <div>
-                <NavbarC/>
-                <div className='colorBlue' style={{ height: '300px' }}>
-                    <h1 style={{ color: 'white', fontFamily: 'Montserrat', fontSize: '33px', paddingTop: '50px', fontWeight: 'bold' }} className='text-center'>Generating exams has never been easier</h1>
+                <NavbarC />
+                <div className='colorBlue text-center'>
+                    <i style={{ color: 'white', fontSize: '120px', paddingTop: '40px', marginBottom: '20px' }} className='fas fa-chalkboard-teacher'></i>
+                    <h1 style={{ color: 'white', fontFamily: 'Montserrat', fontSize: '33px', fontWeight: 'bold' }} className='text-center'>Generating exams has never been easier</h1>
                     <div className='text-center'>
-                        <button onClick={this.getStarted} className='text-center btnBackBlue'>Get started</button>
+                        <button onClick={this.getStarted} className='text-center btnBackBlue'>Start!</button>
                     </div>
                 </div>
                 <div style={{ height: '300px' }} >

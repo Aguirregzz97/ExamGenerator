@@ -6,7 +6,7 @@ import TopicStorage, { ITopicModel } from '../Shared/TopicStorage'
 import { SpringGrid, makeResponsive } from 'react-stonecutter'
 import swal from 'sweetalert2'
 import CurrentUserStorage from '../Shared/CurrentUserStorage'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 
 const GridPage = makeResponsive(SpringGrid, { maxWidth: 1920 })
@@ -38,7 +38,7 @@ interface MatchParams {
   url: string
  }
 
-export default class Home extends React.Component<Props, State> {
+export default class Topics extends React.Component<Props, State> {
 
     constructor(props) {
         super(props)
@@ -100,9 +100,58 @@ export default class Home extends React.Component<Props, State> {
     }
 
     deleteTopic = (topicToDelete: ITopicModel) => {
+        swal({
+            title: 'Are you sure?',
+            text: 'You wont be able to revert this!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                {
+                    this.state.topics.forEach((element, index) => {
+                        if (topicToDelete.id === element.id) {
+                            this.state.topics.splice(index, 1)
+                            TopicStorage.storeTopics(this.state.topics, this.state.currentUser.id)
+                            swal({
+                                type: 'success',
+                                title: 'Deleted!',
+                                text: 'Your subject ' + topicToDelete.topicName + ' has ben deleted',
+                                timer: 1500,
+                                showConfirmButton: false,
+                                onClose: () => { window.location.reload() }
+                            })
+                        }
+                    })
+                }
+            }
+        })
     }
 
-    editTopic = (topicToEdit: ITopicModel) => {
+    editTopic = async (topicToEdit: ITopicModel) => {
+        const { value: topicInput } = await swal({
+            title: 'Input topic name',
+            input: 'text',
+            inputPlaceholder: 'Enter your topic name!'
+        })
+        if (topicInput) {
+            this.state.topics.forEach((element) => {
+                if (element.id === topicToEdit.id) {
+                    element.topicName = topicInput
+                    TopicStorage.storeTopics(this.state.topics, this.state.currentUser.id)
+                    swal({
+                        type: 'success',
+                        title: 'succesfully chnaged subject name',
+                        text: 'Your subject ' + topicToEdit.topicName + ' has been edited to ' + topicInput,
+                        timer: 1500,
+                        showConfirmButton: false,
+                        onClose: () => { window.location.reload() }
+                    })
+                }
+            })
+        }
     }
 
     render() {
@@ -132,7 +181,7 @@ export default class Home extends React.Component<Props, State> {
                                 return (
                                     <div key={value.id} className='text-center'>
                                         <span onClick={() => this.deleteTopic(value)} style={{  fontSize: '22px' }} className='trashCan far fa-trash-alt float-right text-center'></span>
-                                            <span style={{ fontSize: '110px' }} className='fas fa-file-alt newTopic'></span>
+                                            <Link to={'/Topics' + value.id}><span style={{ fontSize: '110px' }} className='fas fa-file-alt newTopic'></span></Link>
                                         <h4 style={{ fontSize: '17px', color: '#244173', paddingTop: '15px', fontFamily: 'Montserrat', fontWeight: 'bold' }} className='text-center'>{value.topicName}<span onClick={() => this.editTopic(value)} style={{ fontSize: '20px' }} className='editSubject far fa-edit'></span></h4>
                                     </div>
                                 )

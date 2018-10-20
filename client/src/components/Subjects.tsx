@@ -7,6 +7,8 @@ import SubjectStorage, { ISubjectModel } from '../Shared/SubjectStorage'
 import swal from 'sweetalert2'
 import Topics from './Topics'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import TopicStorage, { ITopicModel } from '../Shared/TopicStorage'
+import { TeachingBubble } from 'office-ui-fabric-react/lib/TeachingBubble'
 
 const GridPage = makeResponsive(SpringGrid, { maxWidth: 1920 })
 
@@ -14,30 +16,46 @@ const GridPage = makeResponsive(SpringGrid, { maxWidth: 1920 })
 type State = {
     currentUser: IUserModel
     subjects: ISubjectModel[]
+    topics: ITopicModel[]
+    isTeachingBubbleVissible: boolean,
 }
 
 type Props = {
 }
 
 export default class Subjects extends React.Component<Props, State> {
-
+    private _menuButtonElement: HTMLElement
     constructor(props) {
         super(props)
         this.state = {
             currentUser: null,
             subjects: null,
+            topics: null,
+            isTeachingBubbleVissible: false,
         }
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
         const currentUserC: IUserModel = await CurrentUserStorage.getUser()
         const currentSubjectsC: ISubjectModel[] = await SubjectStorage.getSubjects(currentUserC.id)
+        const currentTopicsC: ITopicModel[] = await TopicStorage.getTopics(currentUserC.id)
         this.setState({
             currentUser: currentUserC,
-            subjects: currentSubjectsC
+            subjects: currentSubjectsC,
+            topics: currentTopicsC
         })
+        if (currentSubjectsC.length === 0) {
+            this.setState({
+                isTeachingBubbleVissible: true
+            })
+        }
     }
 
+    _onDismiss = (ev: any) => {
+        this.setState({
+            isTeachingBubbleVissible: !this.state.isTeachingBubbleVissible
+        })
+    }
 
     editSubject = async (subject: ISubjectModel) => {
 
@@ -78,6 +96,15 @@ export default class Subjects extends React.Component<Props, State> {
         }).then((result) => {
             if (result.value) {
                 {
+                    let size: number = this.state.topics.length
+                    let offset: number = 0
+                    for (let i = 0; i < size; i++) {
+                        if (this.state.topics[i - offset].idSubject === subject.id) {
+                            this.state.topics.splice(i - offset, 1)
+                            offset++
+                        }
+                    }
+                    TopicStorage.storeTopics(this.state.topics, this.state.currentUser.id)
                     this.state.subjects.forEach((element, index) => {
                         if (subject.id === element.id) {
                             this.state.subjects.splice(index, 1)
@@ -149,7 +176,10 @@ export default class Subjects extends React.Component<Props, State> {
                             springConfig={{ stiffness: 170, damping: 22 }}
                         >
                             <div>
-                                <span onClick={this.createNewSubject} style={{ fontSize: '110px' }} className='far fa-plus-square newSubject'></span>
+                                <span className='ms-TeachingBubbleBasicExample-buttonArea'
+                                    ref={menuButton => (this._menuButtonElement = menuButton!)}>
+                                    <span onClick={this.createNewSubject} style={{ fontSize: '110px' }} className='far fa-plus-square newSubject'></span>
+                                </span>
                                 <h4 style={{ fontSize: '20px', color: '#244173', fontFamily: 'Montserrat', fontWeight: 'bold', paddingTop: '15px' }} className='text-center'>new</h4>
                             </div>
                             {this.state.subjects.map((value) => {
@@ -163,6 +193,19 @@ export default class Subjects extends React.Component<Props, State> {
                             })}
                         </GridPage>
                     </div>
+                    {this.state.isTeachingBubbleVissible ? (
+                        <div>
+                            <TeachingBubble
+                                targetElement={this._menuButtonElement}
+                                hasCondensedHeadline={true}
+                                onDismiss={this._onDismiss}
+                                hasCloseIcon={true}
+                                headline='You currently have no questions!'
+                            >
+                                Your account is currently empty, to add questions, first create a subject with its topic and add away!
+                                 </TeachingBubble>
+                        </div>
+                    ) : null}
                 </div>
             )
         }

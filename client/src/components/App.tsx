@@ -9,6 +9,7 @@ import Topics from './Topics'
 import { Switch, Route } from 'react-router-dom'
 import Exams from './Exams'
 import User from './User'
+import Questions from './Questions'
 
 
 
@@ -29,6 +30,7 @@ const Main = () => (
       <Route path='/Register' component={Register} />
       <Route path='/Subjects' component={Subjects} />
       <Route path='/Subjects:id' component={Topics} />
+      <Route path='/Topics:id' component={Questions} />
     </Switch>
   </main>
 )
