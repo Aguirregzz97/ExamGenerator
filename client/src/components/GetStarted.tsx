@@ -4,7 +4,6 @@ import { IUserModel } from '../Shared/UserStorage'
 import CurrentUserStorage from '../Shared/CurrentUserStorage'
 import NavbarC from './NavbarC'
 
-
 const examImg = require('./../assets/img/Exam.png')
 
 
@@ -52,12 +51,15 @@ export default class GetStarted extends React.Component<Props, State> {
                         <button onClick={this.getStarted} className='text-center btnBackBlue'>Start!</button>
                     </div>
                 </div>
-                <div style={{ height: '300px' }} >
-                    <h1 className='text-center' style={{ color: '#244173', fontFamily: 'Montserrat', fontSize: '33px', paddingTop: '50px', fontWeight: 'bold' }}>WHY GENEVAL?</h1>
+                <div style={{ paddingBottom: '50px' }} >
+                    <h1 className='text-center' style={{ color: '#244173', fontFamily: 'Montserrat', fontSize: '33px', paddingTop: '20px', fontWeight: 'bold' }}>WHY GENEVAL?</h1>
+                    <hr />
                     <div className='row'>
                         <div className='col-md-2'></div>
-                        <div className='col-md-8 text-center'>
-                            <h2 style={{ color: '#244173', fontFamily: 'Montserrat', fontSize: '24px', fontWeight: 'bold', lineHeight: '40px', paddingTop: '20px' }} className='text-center'>Stop wasting time creating exams, Geneval allows you to easily generate exams, just generate your questions and add them to your exams!</h2>
+                        <div className='col-md-4 text-center'>
+                            <h2 style={{ color: '#244173', fontFamily: 'Montserrat', fontSize: '21px', fontWeight: 'bold', lineHeight: '40px' }} className='text-center'>Stop wasting time creating exams, Geneval allows you to easily generate exams, just generate your questions and add them to your exams!</h2>
+                        </div>
+                        <div className='col-md-4 text-center'>
                             <img style={{ paddingTop: '20px' }} id='examImg' src={examImg} />
                         </div>
                         <div className='col-md-2'></div>

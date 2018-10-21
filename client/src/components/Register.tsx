@@ -84,15 +84,18 @@ export default class Register extends React.Component<Props, State> {
         }, async () => {
             await UserStroage.storeUsers(newUsers)
             await CurrentUserStorage.storeCurrentUser(userToAdd)
-            await swal({
-                type: 'success',
-                title: 'Your account has been created!',
+            const toast = swal.mixin({
+                toast: true,
+                position: 'top-end',
                 showConfirmButton: false,
-                timer: 1500,
+                timer: 1000,
                 onClose: () => {window.location.href = '/Subjects'}
-            })
+              })
+              toast({
+                type: 'success',
+                title: 'Registered succesfully'
+              })
         })
-
     }
 
     _onDismiss = (ev: any) => {

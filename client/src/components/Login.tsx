@@ -78,13 +78,17 @@ export default class Register extends React.Component<Props, State> {
                 }, async () => {
                     await CurrentUserStorage.storeCurrentUser(element)
                 })
-                swal({
-                    type: 'success',
-                    title: 'Welcome to geneval!',
+                const toast = swal.mixin({
+                    toast: true,
+                    position: 'top-end',
                     showConfirmButton: false,
-                    timer: 1500,
-                    onClose: () => {window.location.href = '/Exams'}
-                })
+                    timer: 1200,
+                    onClose: () => {window.location.href = '/Subjects'}
+                  })
+                  toast({
+                    type: 'success',
+                    title: 'Signed in successfully'
+                  })
                 return
             }
         })

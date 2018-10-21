@@ -37,6 +37,12 @@ export default class Subjects extends React.Component<Props, State> {
 
     async componentDidMount() {
         const currentUserC: IUserModel = await CurrentUserStorage.getUser()
+        if (currentUserC === undefined) {
+            this.setState({
+                isTeachingBubbleVissible: true
+            })
+            return
+        }
         const currentSubjectsC: ISubjectModel[] = await SubjectStorage.getSubjects(currentUserC.id)
         const currentTopicsC: ITopicModel[] = await TopicStorage.getTopics(currentUserC.id)
         this.setState({
@@ -155,44 +161,19 @@ export default class Subjects extends React.Component<Props, State> {
         }
     }
 
+    alertNotLoggedIn = () => {
+    }
+
 
     render() {
         if (!this.state.subjects) {
-            return <h1>loading...</h1>
-        }
-        if (this.state.subjects) {
             return (
                 <div>
                     <NavbarC />
                     <h1 style={{ color: '#244173', fontFamily: 'Montserrat', fontSize: '40px', paddingTop: '30px', fontWeight: 'bold', paddingBottom: '30px' }} className='text-center'>SUBJECTS</h1>
-                    <div style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                        <GridPage
-                            component='ul'
-                            columns={5}
-                            columnWidth={220}
-                            gutterWidth={15}
-                            gutterHeight={20}
-                            itemHeight={190}
-                            springConfig={{ stiffness: 170, damping: 22 }}
-                        >
-                            <div>
-                                <span className='ms-TeachingBubbleBasicExample-buttonArea'
-                                    ref={menuButton => (this._menuButtonElement = menuButton!)}>
-                                    <span onClick={this.createNewSubject} style={{ fontSize: '110px' }} className='far fa-plus-square newSubject'></span>
-                                </span>
-                                <h4 style={{ fontSize: '20px', color: '#244173', fontFamily: 'Montserrat', fontWeight: 'bold', paddingTop: '15px' }} className='text-center'>new</h4>
-                            </div>
-                            {this.state.subjects.map((value) => {
-                                return (
-                                    <div key={value.id} className='text-center'>
-                                        <Link to={'/Subjects' + value.id}><span style={{ fontSize: '110px', paddingRight: '5px', paddingLeft: '5px' }} className='fas fa-book newSubject text-center'></span></Link>
-                                        <span onClick={() => this.deleteSubject(value)} style={{ fontSize: '22px' }} className='trashCan far fa-trash-alt float-right text-center'></span>
-                                        <h4 style={{ fontSize: '17px', color: '#244173', paddingTop: '15px', fontFamily: 'Montserrat', fontWeight: 'bold' }} className='text-center'>{value.subjectName}<span onClick={() => this.editSubject(value)} style={{ fontSize: '20px' }} className='editSubject far fa-edit'></span></h4>
-                                    </div>
-                                )
-                            })}
-                        </GridPage>
-                    </div>
+                    <span className='ms-TeachingBubbleBasicExample-buttonArea'
+                        ref={menuButton => (this._menuButtonElement = menuButton!)}>
+                    </span>
                     {this.state.isTeachingBubbleVissible ? (
                         <div>
                             <TeachingBubble
@@ -200,15 +181,61 @@ export default class Subjects extends React.Component<Props, State> {
                                 hasCondensedHeadline={true}
                                 onDismiss={this._onDismiss}
                                 hasCloseIcon={true}
-                                headline='You currently have no questions!'
+                                headline='You are not logged in!'
                             >
-                                Your account is currently empty, to add questions, first create a subject with its topic and add away!
-                                 </TeachingBubble>
+                                In order to create questions you need to log in first
+                        </TeachingBubble>
                         </div>
                     ) : null}
                 </div>
             )
         }
-
+        return (
+            <div>
+                <NavbarC />
+                <h1 style={{ color: '#244173', fontFamily: 'Montserrat', fontSize: '40px', paddingTop: '30px', fontWeight: 'bold', paddingBottom: '30px' }} className='text-center'>SUBJECTS</h1>
+                <div style={{ paddingLeft: '100px', paddingRight: '100px' }}>
+                    <GridPage
+                        component='ul'
+                        columns={5}
+                        columnWidth={220}
+                        gutterWidth={15}
+                        gutterHeight={20}
+                        itemHeight={190}
+                        springConfig={{ stiffness: 170, damping: 22 }}
+                    >
+                        <div>
+                            <span className='ms-TeachingBubbleBasicExample-buttonArea'
+                                ref={menuButton => (this._menuButtonElement = menuButton!)}>
+                                <span onClick={this.createNewSubject} style={{ fontSize: '110px' }} className='far fa-plus-square newSubject'></span>
+                            </span>
+                            <h4 style={{ fontSize: '20px', color: '#244173', fontFamily: 'Montserrat', fontWeight: 'bold', paddingTop: '15px' }} className='text-center'>new</h4>
+                        </div>
+                        {this.state.subjects.map((value) => {
+                            return (
+                                <div key={value.id} className='text-center'>
+                                    <Link to={'/Subjects' + value.id}><span style={{ fontSize: '110px', paddingRight: '5px', paddingLeft: '5px' }} className='fas fa-book newSubject text-center'></span></Link>
+                                    <span onClick={() => this.deleteSubject(value)} style={{ fontSize: '22px' }} className='trashCan far fa-trash-alt float-right text-center'></span>
+                                    <h4 style={{ fontSize: '17px', color: '#244173', paddingTop: '15px', fontFamily: 'Montserrat', fontWeight: 'bold' }} className='text-center'>{value.subjectName}<span onClick={() => this.editSubject(value)} style={{ fontSize: '20px' }} className='editSubject far fa-edit'></span></h4>
+                                </div>
+                            )
+                        })}
+                    </GridPage>
+                </div>
+                {this.state.isTeachingBubbleVissible ? (
+                    <div>
+                        <TeachingBubble
+                            targetElement={this._menuButtonElement}
+                            hasCondensedHeadline={true}
+                            onDismiss={this._onDismiss}
+                            hasCloseIcon={true}
+                            headline='You currently have no questions!'
+                        >
+                            Your account is currently empty, to add questions, first create a subject with its topic and add away!
+                                 </TeachingBubble>
+                    </div>
+                ) : null}
+            </div>
+        )
     }
 }

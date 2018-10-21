@@ -88,7 +88,7 @@ export default class NavbarC extends React.Component<Props, State> {
                             <Link style={{ fontFamily: 'Montserrat' }} className='navItem nav-link' to='/Exams'>EXAMS</Link>
                             </NavItem>
                             <NavItem>
-                                <Link style={{ fontFamily: 'Montserrat' }} className='navItem nav-link' to='/Subjects'>QUESTIONS</Link>
+                                <Link style={{ fontFamily: 'Montserrat' }} className='navItem nav-link' to='/Subjects'>CREATE-QUESTIONS</Link>
                             </NavItem>
                             {userBlock}
                         </Nav>

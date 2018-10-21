@@ -1,6 +1,5 @@
 export interface IQuestionModel {
     id: number
-    question: string
     possibleAnswers: IPossibleAnswer[]
     idTopic: number
     questionName: string
