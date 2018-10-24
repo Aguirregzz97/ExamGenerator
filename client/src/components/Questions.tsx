@@ -21,23 +21,23 @@ type State = {
 
 interface MatchParams {
     id: number
- }
+}
 
- interface Props extends RouteComponentProps<MatchParams> {
- }
+interface Props extends RouteComponentProps<MatchParams> {
+}
 
- export interface RouteComponentProps<P> {
-  match: match<P>
-  staticContext?: any
- }
+export interface RouteComponentProps<P> {
+    match: match<P>
+    staticContext?: any
+}
 
- // tslint:disable-next-line:class-name
- export interface match<P> {
-  params: P
-  isExact: boolean
-  path: string
-  url: string
- }
+// tslint:disable-next-line:class-name
+export interface match<P> {
+    params: P
+    isExact: boolean
+    path: string
+    url: string
+}
 
 export default class Questions extends React.Component<Props, State> {
 
@@ -68,7 +68,7 @@ export default class Questions extends React.Component<Props, State> {
         })
     }
 
-    createNewQuestion  = async () => {
+    createNewQuestion = async () => {
     }
 
     deleteQuestion = (questionToDelete: IQuestionModel) => {
@@ -78,6 +78,7 @@ export default class Questions extends React.Component<Props, State> {
     }
 
     render() {
+        let placeH = <span className='fas fa-search'></span>
         if (!this.state.questions) {
             return <h1>loading...</h1>
         }
@@ -85,32 +86,28 @@ export default class Questions extends React.Component<Props, State> {
             <div>
                 <NavbarC />
                 <h1 style={{ color: '#244173', fontFamily: 'Montserrat', fontSize: '40px', paddingTop: '30px', fontWeight: 'bold', paddingBottom: '30px' }} className='text-center'>{this.state.currentTopic.topicName}</h1>
-                    <div style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                        <GridPage
-                            component='ul'
-                            columns={5}
-                            columnWidth={220}
-                            gutterWidth={15}
-                            gutterHeight={20}
-                            itemHeight={190}
-                            springConfig={{ stiffness: 170, damping: 22 }}
-                        >
-                            <div>
-                                <button className='newSubject' onClick={this.createNewQuestion} style={{ background: 'none', border: 'none' }}><span style={{ fontSize: '110px' }} className='far fa-plus-square newSubject'></span></button>
-                                <h4 style={{ fontSize: '20px', color: '#244173', fontFamily: 'Montserrat', fontWeight: 'bold', paddingTop: '15px' }} className='text-center'>new</h4>
-                            </div>
-                            {this.state.questions.map((value) => {
-                                if (this.state.currentTopic.id === value.idTopic)
-                                return (
-                                    <div key={value.id} className='text-center'>
-                                        <span onClick={() => this.deleteQuestion(value)} style={{  fontSize: '22px' }} className='trashCan far fa-trash-alt float-right text-center'></span>
-                                            <span style={{ fontSize: '110px' }} className='fas fa-question newTopic'></span>
-                                        <h4 style={{ fontSize: '17px', color: '#244173', paddingTop: '15px', fontFamily: 'Montserrat', fontWeight: 'bold' }} className='text-center'>{value.questionName}<span onClick={() => this.editQuestion(value)} style={{ fontSize: '20px' }} className='editSubject far fa-edit'></span></h4>
-                                    </div>
-                                )
-                            })}
-                        </GridPage>
+                <div style={{ paddingLeft: '150px', paddingRight: '150px' }}>
+                    <div className='row'>
+                        <div className='col-6'>
+                            <span onClick={this.createNewQuestion} style={{ fontSize: '50px', paddingLeft: '40px' }} className='fas fa-plus-circle newSubject'></span>
+                        </div>
+                        <div className='col-6'>
+                            <form className='form-inline float-right'>
+                                <input className='form-control' type='text' placeholder='Search' aria-label='Search' />
+                                <i style={{ paddingLeft: '10px', color: '#244173' }} className='fa fa-search' aria-hidden='true'></i>
+                            </form>
+                        </div>
                     </div>
+                </div>
+                {
+                    this.state.questions.map((element, index) => {
+                        if (this.state.currentTopic.id === element.idTopic) {
+                            return (
+                                <div></div>
+                            )
+                        }
+                    })
+                }
             </div>
         )
     }
