@@ -57,7 +57,7 @@ export default class GetStarted extends React.Component<Props, State> {
                     <div className='row'>
                         <div className='col-md-2'></div>
                         <div className='col-md-4 text-center'>
-                            <h2 style={{ color: '#244173', fontFamily: 'Montserrat', fontSize: '21px', fontWeight: 'bold', lineHeight: '40px' }} className='text-center'>Stop wasting time creating exams, Geneval allows you to easily generate exams, just generate your questions and add them to your exams!</h2>
+                            <h2 style={{ color: '#244173', fontFamily: 'Montserrat', fontSize: '21px', fontWeight: 'bold', lineHeight: '40px', paddingTop: '30px' }} className='text-center'>Stop wasting time creating exams, Geneval allows you to easily generate exams, just generate your questions and add them to your exams!</h2>
                         </div>
                         <div className='col-md-4 text-center'>
                             <img style={{ paddingTop: '20px' }} id='examImg' src={examImg} />
