@@ -127,3 +127,44 @@ $border-color: red;
   cursor: pointer;
   color: green;
 }
+
+.editQuestion {
+  padding-right: 7px;
+  transition: 0.3s;
+  background: none;
+  border: none;
+  color: black;
+}
+
+.editQuestion:hover {
+  transform: scale(1.15);
+  cursor: pointer;
+  color: green;
+}
+
+.trashCanQuestion {
+  transition: 0.3s;
+  background: none;
+  color: black;
+  padding-right: 7px;
+}
+
+.trashCanQuestion:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+  color: red;
+}
+
+.eyeQuestion {
+  font-size: 22px;
+  transition: 0.3s;
+  background: none;
+  color: black;
+  padding-right: 9px;
+}
+
+.eyeQuestion:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+  color: blue;
+}

@@ -10,9 +10,10 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import QuestionStorage, { IQuestionModel, IPossibleAnswer } from '../Shared/QuestionStorage'
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import matchSorter from 'match-sorter'
 
 const GridPage = makeResponsive(SpringGrid, { maxWidth: 1920 })
-
 
 type State = {
     currentUser: IUserModel
@@ -21,6 +22,10 @@ type State = {
     hideDialog: boolean
     questionName: string
     options: IPossibleAnswer[]
+    modal: boolean
+    currentQuestionModal: IQuestionModel
+    isEditing: boolean,
+    searchValue: string
 }
 
 interface MatchParams {
@@ -54,6 +59,10 @@ export default class Questions extends React.Component<Props, State> {
             hideDialog: true,
             options: new Array(4),
             questionName: null,
+            modal: false,
+            currentQuestionModal: null,
+            isEditing: false,
+            searchValue: ''
         }
     }
 
@@ -98,10 +107,83 @@ export default class Questions extends React.Component<Props, State> {
     }
 
     deleteQuestion = (questionToDelete: IQuestionModel) => {
+        swal({
+            title: 'Are you sure?',
+            text: 'You wont be able to revert this!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                for (let i = 0; i < this.state.questions.length; i++) {
+                    if (questionToDelete.id === this.state.questions[i].id) {
+                        this.state.questions.splice(i, 1)
+                        break
+                    }
+                }
+                QuestionStorage.storeQuestions(this.state.questions, this.state.currentUser.id)
+                swal({
+                    type: 'success',
+                    title: 'Deleted!',
+                    text: 'Your subject ' + questionToDelete.questionName + ' has ben deleted',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    onClose: () => { window.location.reload() }
+                })
+            }
+        })
     }
 
-    editQuestion = async (questionToEdit: IQuestionModel) => {
+    editQuestion = (questionToEdit: IQuestionModel) => {
+        const newOptionFinal: IPossibleAnswer[] = [...this.state.options]
+        let optionToAdd0: IPossibleAnswer = {
+            answer: questionToEdit.possibleAnswers[0].answer,
+            isCorrect: true
+        }
+        let optionToAdd1: IPossibleAnswer = {
+            answer: questionToEdit.possibleAnswers[1].answer,
+            isCorrect: undefined
+        }
+        let optionToAdd2: IPossibleAnswer = {
+            answer: questionToEdit.possibleAnswers[2].answer,
+            isCorrect: undefined
+        }
+        let optionToAdd3: IPossibleAnswer = {
+            answer: questionToEdit.possibleAnswers[3].answer,
+            isCorrect: undefined
+        }
+        newOptionFinal[0] = optionToAdd0
+        newOptionFinal[1] = optionToAdd1
+        newOptionFinal[2] = optionToAdd2
+        newOptionFinal[3] = optionToAdd3
+        this.setState({
+            isEditing: true,
+            currentQuestionModal: questionToEdit,
+            options: newOptionFinal,
+            questionName: questionToEdit.questionName
+        }, async () => {
+            await this._showDialog()
+        })
     }
+
+    submitEdit = async () => {
+        const newEditedQuestion = {
+            id: this.state.currentQuestionModal.id,
+            possibleAnswers: this.state.options,
+            idTopic: this.state.currentQuestionModal.idTopic,
+            questionName: this.state.questionName
+        }
+        for (let i = 0; i < this.state.questions.length; i++) {
+            if (this.state.currentQuestionModal.id === this.state.questions[i].id) {
+                this.state.questions[i] = newEditedQuestion
+                break
+            }
+        }
+        await QuestionStorage.storeQuestions(this.state.questions, this.state.currentUser.id)
+    }
+
 
     onChangeQuestionName = (event) => {
         this.setState({
@@ -126,8 +208,10 @@ export default class Questions extends React.Component<Props, State> {
         })
     }
 
-    clickedLi = (index: number) => {
-
+    changedFilter = (event) => {
+        this.setState({
+            searchValue: event.target.value
+        })
     }
 
     private _showDialog = (): void => {
@@ -138,8 +222,20 @@ export default class Questions extends React.Component<Props, State> {
         this.setState({ hideDialog: true })
     }
 
+    clickedLi = (currentQuestion: IQuestionModel) => {
+        this.setState({
+            currentQuestionModal: currentQuestion,
+            modal: !this.state.modal
+        })
+    }
+
+    toggle = () => {
+        this.setState({
+            modal: !this.state.modal
+        })
+    }
+
     render() {
-        let placeH = <span className='fas fa-search'></span>
         if (!this.state.questions) {
             return <h1>loading...</h1>
         }
@@ -154,27 +250,39 @@ export default class Questions extends React.Component<Props, State> {
                         </div>
                         <div className='col-6'>
                             <form className='form-inline float-right'>
-                                <input className='form-control' type='text' placeholder='Search' aria-label='Search' />
+                                <input onChange={this.changedFilter} className='form-control' type='text' placeholder='Search' aria-label='Search' />
                                 <i style={{ paddingLeft: '10px', color: '#244173' }} className='fa fa-search' aria-hidden='true'></i>
                             </form>
                         </div>
                     </div>
                 </div>
                 <ul style={{ paddingTop: '20px' }} className='list-group'>
-                {
-                    this.state.questions.map((element, index) => {
-                        if (this.state.currentTopic.id === element.idTopic) {
-                            return (
-                                <div key={index}>
-                                    <div className='text-center'>
-                                        <li onClick={() => {this.clickedLi(index) }} className='list-group-item'>{element.questionName} <span style={{ paddingRight: '10px', color: '#244173', fontSize: '20px' }} className='float-right fas fa-caret-square-down'></span> </li>
+                    {
+                        matchSorter(this.state.questions, this.state.searchValue, {keys: ['questionName', 'possibleAnswers.0.answer', 'possibleAnswers.1.answer', 'possibleAnswers.2.answer', 'possibleAnswers.3.answer', ]}).map((element, index) => {
+                            if (this.state.currentTopic.id === element.idTopic) {
+                                return (
+                                    <div key={element.id}>
+                                        <div className='text-center'>
+                                            <li className='list-group-item list-group-item-action list-group-item-dark'>{element.questionName}<span onClick={() => this.deleteQuestion(element)} style={{ fontSize: '22px' }} className='trashCanQuestion far fa-trash-alt float-right'></span><span onClick={() => this.editQuestion(element)} style={{ fontSize: '20px' }} className='editQuestion far fa-edit float-right'></span><span onClick={() => { this.clickedLi(element) }} className='eyeQuestion far fa-eye float-right'></span></li>
+                                        </div>
                                     </div>
-                                </div>
-                            )
-                        }
-                    })
-                }
+                                )
+                            }
+                        })
+                    }
                 </ul>
+                <Modal isOpen={this.state.modal} toggle={this.toggle}>
+                    <ModalHeader toggle={this.toggle}>{this.state.currentQuestionModal ? this.state.currentQuestionModal.questionName : null}</ModalHeader>
+                    <ModalBody>
+                        <h5>a) {this.state.currentQuestionModal ? this.state.currentQuestionModal.possibleAnswers[0].answer : null}</h5>
+                        <h5>a) {this.state.currentQuestionModal ? this.state.currentQuestionModal.possibleAnswers[1].answer : null}</h5>
+                        <h5>a) {this.state.currentQuestionModal ? this.state.currentQuestionModal.possibleAnswers[2].answer : null}</h5>
+                        <h5>a) {this.state.currentQuestionModal ? this.state.currentQuestionModal.possibleAnswers[3].answer : null}</h5>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color='danger' onClick={this.toggle}>Exit</Button>
+                    </ModalFooter>
+                </Modal>
                 <Dialog
                     hidden={this.state.hideDialog}
                     onDismiss={this._closeDialog}
@@ -182,35 +290,35 @@ export default class Questions extends React.Component<Props, State> {
                     maxWidth={'1000px'}
                     dialogContentProps={{
                         type: DialogType.largeHeader,
-                        title: 'Generate new question',
+                        title: this.state.isEditing ? 'Edit question' : 'Generate new question',
                     }}
                 >
                     <div className=''>
                         <form>
                             <div className='form-group'>
                                 <h4 className='text-center'>Question:</h4>
-                                <input onChange={this.onChangeQuestionName} style={{ marginTop: '10px' }} type='text' className='form-control' placeholder='Enter question' required />
+                                <input onChange={this.onChangeQuestionName} style={{ marginTop: '10px' }} type='text' className='form-control' placeholder='Enter question' defaultValue={this.state.isEditing ? this.state.currentQuestionModal.questionName : null} required />
                                 <div className='form-row'>
                                     <div className='form-group col-8' style={{ marginTop: '40px' }}>
-                                        <input onChange={this.onChangeQuestionOptions(0)} type='text' className='form-control' placeholder='option#1' required />
+                                        <input onChange={this.onChangeQuestionOptions(0)} type='text' className='form-control' placeholder='option#1' defaultValue={this.state.isEditing ? this.state.currentQuestionModal.possibleAnswers[0].answer : null} required />
                                     </div>
                                     <div style={{ paddingTop: '47px', color: 'black', fontWeight: 'bold' }} className='col-4'><span style={{ fontSize: '25px', color: 'green' }} className='fas fa-check'></span>  Correct Answer</div>
                                     <div className='form-group col-8'>
-                                        <input onChange={this.onChangeQuestionOptions(1)} style={{ marginTop: '10px' }} type='text' className='form-control' placeholder='option#2' required />
+                                        <input onChange={this.onChangeQuestionOptions(1)} style={{ marginTop: '10px' }} type='text' className='form-control' placeholder='option#2' defaultValue={this.state.isEditing ? this.state.currentQuestionModal.possibleAnswers[1].answer : null} required />
                                     </div>
                                     <div className='form-group col-4'></div>
                                     <div className='form-group col-8'>
-                                        <input onChange={this.onChangeQuestionOptions(2)} style={{ marginTop: '10px' }} type='text' className='form-control' placeholder='option#3' required />
+                                        <input onChange={this.onChangeQuestionOptions(2)} style={{ marginTop: '10px' }} type='text' className='form-control' placeholder='option#3' defaultValue={this.state.isEditing ? this.state.currentQuestionModal.possibleAnswers[2].answer : null} required />
                                     </div>
                                     <div className='form-group col-4'></div>
                                     <div className='form-group col-8'>
-                                        <input onChange={this.onChangeQuestionOptions(3)} style={{ marginTop: '10px' }} type='text' className='form-control' placeholder='option#4' required />
+                                        <input onChange={this.onChangeQuestionOptions(3)} style={{ marginTop: '10px' }} type='text' className='form-control' placeholder='option#4' defaultValue={this.state.isEditing ? this.state.currentQuestionModal.possibleAnswers[3].answer : null} required />
                                     </div>
                                     <div className='form-group col-4'></div>
                                 </div>
                             </div>
                             <div className='text-center'>
-                                <PrimaryButton type='submit' style={{ marginRight: '10px' }} onClick={this.createNewQuestion} text='Save' />
+                                <PrimaryButton type='submit' style={{ marginRight: '10px' }} onClick={this.state.isEditing ? this.submitEdit : this.createNewQuestion} text={this.state.isEditing ? 'Update' : 'Save'} />
                                 <DefaultButton style={{ marginLeft: '10px' }} onClick={this._closeDialog} text='Cancel' />
                             </div>
                         </form>

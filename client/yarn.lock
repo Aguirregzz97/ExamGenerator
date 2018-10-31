@@ -6859,10 +6859,10 @@ markdown-table@^1.1.0:
   resolved "https://registry.yarnpkg.com/markdown-table/-/markdown-table-1.1.2.tgz#c78db948fa879903a41bce522e3b96f801c63786"
   integrity sha512-NcWuJFHDA8V3wkDgR/j4+gZx+YQwstPgfQDV8ndUeWWzta3dnDTBxpVzqS9lkmJAuV5YX35lmyojl6HO5JXAgw==
 
-match-sorter@^2.2.3:
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/match-sorter/-/match-sorter-2.2.3.tgz#5fc142821fed543f352fb7edce2603970919d225"
-  integrity sha512-+ny3ZRXOE4lNSb+NJpAdvkYRyAVMWVWl9RoV/c6XCNmndIqzlBIVd8GwLcmBsb8BZc7Yj7z5WoDWUzC4qqld+A==
+match-sorter@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/match-sorter/-/match-sorter-2.3.0.tgz#99eaf386689f75bf976f6bbf7f49afb9a7ffecc8"
+  integrity sha512-0/F1ezfjs5vegTvdH0sJEDrIi+w7wvUeDW/yqLMsK6jQWgNNJRv8jYCLBc8QrCxQNpSEpei6vrOcnJwAbnYhkw==
   dependencies:
     diacritic "0.0.2"
 
