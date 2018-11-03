@@ -77,7 +77,7 @@ export default class Subjects extends React.Component<Props, State> {
                     SubjectStorage.storeSubjects(this.state.subjects, this.state.currentUser.id)
                     swal({
                         type: 'success',
-                        title: 'succesfully chnaged subject name',
+                        title: 'succesfully changed subject name',
                         text: 'Your subject ' + subject.subjectName + ' has been edited to ' + subjectInput,
                         timer: 1500,
                         showConfirmButton: false,

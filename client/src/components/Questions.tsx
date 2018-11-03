@@ -222,6 +222,13 @@ export default class Questions extends React.Component<Props, State> {
         this.setState({ hideDialog: true })
     }
 
+    newQuestion = () => {
+        this.setState({
+            isEditing: false,
+            hideDialog: false
+        })
+    }
+
     clickedLi = (currentQuestion: IQuestionModel) => {
         this.setState({
             currentQuestionModal: currentQuestion,
@@ -246,7 +253,7 @@ export default class Questions extends React.Component<Props, State> {
                 <div style={{ paddingLeft: '150px', paddingRight: '150px' }}>
                     <div className='row'>
                         <div className='col-6'>
-                            <span onClick={this._showDialog} style={{ fontSize: '50px', paddingLeft: '40px', paddingBottom: '10px' }} className='fas fa-plus-circle newQuestion'></span>
+                            <span onClick={this.newQuestion} style={{ fontSize: '50px', paddingLeft: '40px', paddingBottom: '10px' }} className='fas fa-plus-circle newQuestion'></span>
                         </div>
                         <div className='col-6'>
                             <form className='form-inline float-right'>
