@@ -107,25 +107,6 @@ export default class InsideExam extends React.Component<Props, State> {
         })
       }
 
-      getCurrentObjects = (): IDropdownOption[] => {
-          const subjects: ISubjectModel[] = this.state.subjects
-          const arrayOfKeyValuePairs: IDropdownOption[] = []
-          for (const subject of subjects) {
-              arrayOfKeyValuePairs.push({key: subject.id, text: subject.subjectName})
-          }
-          return arrayOfKeyValuePairs
-      }
-
-      getCurrentTopics = (): IDropdownOption[] => {
-        const topics: ITopicModel[] = this.state.topics
-        const arrayOfKeyValuePairs: IDropdownOption[] = []
-        for (const topic of topics) {
-            if (topic.idSubject === this.state.currentSelectedSubject.id) {
-                arrayOfKeyValuePairs.push({key: topic.id, text: topic.topicName})
-            }
-        }
-        return arrayOfKeyValuePairs
-      }
 
     render() {
         if (!this.state.currentExam || !this.state.subjects || !this.state.topics || !this.state.questions || !this.state.currentSelectedSubject) {
@@ -145,7 +126,9 @@ export default class InsideExam extends React.Component<Props, State> {
                             onChange={this.changeStateSubjects}
                             placeHolder='Select an Option'
                             options={
-                                this.getCurrentObjects()
+                                this.state.subjects.map((value) => {
+                                    return { key: value.id, text: value.subjectName }
+                                })
                             }
                         />
                     </div>
@@ -157,7 +140,11 @@ export default class InsideExam extends React.Component<Props, State> {
                             onChange={this.changeStateTopics}
                             placeHolder='Select an Option'
                             options={
-                                this.getCurrentTopics()
+                                this.state.topics.filter((value) => {
+                                    return value.idSubject === this.state.currentSelectedSubject.id
+                                }).map((value) => {
+                                    return { key: value.id, text: value.topicName }
+                                })
                             }
                         />
                     </div>
