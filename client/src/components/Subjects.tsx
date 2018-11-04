@@ -64,7 +64,6 @@ export default class Subjects extends React.Component<Props, State> {
     }
 
     editSubject = async (subject: ISubjectModel) => {
-
         const { value: subjectInput } = await swal({
             title: 'Input new subject name',
             input: 'text',
@@ -77,7 +76,7 @@ export default class Subjects extends React.Component<Props, State> {
                     SubjectStorage.storeSubjects(this.state.subjects, this.state.currentUser.id)
                     swal({
                         type: 'success',
-                        title: 'succesfully changed subject name',
+                        title: 'succesfully chnaged subject name',
                         text: 'Your subject ' + subject.subjectName + ' has been edited to ' + subjectInput,
                         timer: 1500,
                         showConfirmButton: false,
@@ -86,8 +85,6 @@ export default class Subjects extends React.Component<Props, State> {
                 }
             })
         }
-
-
     }
 
     deleteSubject = (subject: ISubjectModel) => {

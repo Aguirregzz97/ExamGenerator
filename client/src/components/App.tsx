@@ -10,6 +10,7 @@ import { Switch, Route } from 'react-router-dom'
 import Exams from './Exams'
 import User from './User'
 import Questions from './Questions'
+import InsideExam from './InsideExam'
 
 
 
@@ -31,6 +32,7 @@ const Main = () => (
       <Route path='/Subjects' component={Subjects} />
       <Route path='/Subjects:id' component={Topics} />
       <Route path='/Topics:id' component={Questions} />
+      <Route path='/Exam:id' component={InsideExam} />
     </Switch>
   </main>
 )
