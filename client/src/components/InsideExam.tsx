@@ -107,6 +107,26 @@ export default class InsideExam extends React.Component<Props, State> {
         })
       }
 
+      getCurrentObjects = (): IDropdownOption[] => {
+          const subjects: ISubjectModel[] = this.state.subjects
+          const arrayOfKeyValuePairs: IDropdownOption[] = []
+          for (const subject of subjects) {
+              arrayOfKeyValuePairs.push({key: subject.id, text: subject.subjectName})
+          }
+          return arrayOfKeyValuePairs
+      }
+
+      getCurrentTopics = (): IDropdownOption[] => {
+        const topics: ITopicModel[] = this.state.topics
+        const arrayOfKeyValuePairs: IDropdownOption[] = []
+        for (const topic of topics) {
+            if (topic.idSubject === this.state.currentSelectedSubject.id) {
+                arrayOfKeyValuePairs.push({key: topic.id, text: topic.topicName})
+            }
+        }
+        return arrayOfKeyValuePairs
+      }
+
     render() {
         if (!this.state.currentExam || !this.state.subjects || !this.state.topics || !this.state.questions || !this.state.currentSelectedSubject) {
             return <h1>loading...</h1>
@@ -125,9 +145,7 @@ export default class InsideExam extends React.Component<Props, State> {
                             onChange={this.changeStateSubjects}
                             placeHolder='Select an Option'
                             options={
-                                this.state.subjects.map((value) => {
-                                    return { key: value.id, text: value.subjectName }
-                                })
+                                this.getCurrentObjects()
                             }
                         />
                     </div>
@@ -136,12 +154,10 @@ export default class InsideExam extends React.Component<Props, State> {
                         <h5 style={{ paddingBottom: '10px' }} className='text-center'>Select topic</h5>
                         <Dropdown
                             selectedKey={this.state.selectedTopicOption ? this.state.selectedTopicOption.key : undefined}
-                            onChange={this.changeStateSubjects}
+                            onChange={this.changeStateTopics}
                             placeHolder='Select an Option'
                             options={
-                                this.state.topics.map((value) => {
-                                    return this.state.currentSelectedSubject.id === value.id ? { key: value.id, text: value.topicName } : null
-                                })
+                                this.getCurrentTopics()
                             }
                         />
                     </div>
