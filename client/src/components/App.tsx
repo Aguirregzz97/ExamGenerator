@@ -11,6 +11,7 @@ import Exams from './Exams'
 import User from './User'
 import Questions from './Questions'
 import InsideExam from './InsideExam'
+import ExamPreview from './ExamPreview'
 
 
 
@@ -33,6 +34,7 @@ const Main = () => (
       <Route path='/Subjects:id' component={Topics} />
       <Route path='/Topics:id' component={Questions} />
       <Route path='/Exam:id' component={InsideExam} />
+      <Route path='/ExPreview:id' component={ExamPreview}/>
     </Switch>
   </main>
 )

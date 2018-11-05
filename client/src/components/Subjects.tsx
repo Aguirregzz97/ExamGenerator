@@ -9,6 +9,7 @@ import Topics from './Topics'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import TopicStorage, { ITopicModel } from '../Shared/TopicStorage'
 import { TeachingBubble } from 'office-ui-fabric-react/lib/TeachingBubble'
+import { TooltipHost } from 'office-ui-fabric-react/lib/Tooltip'
 
 const GridPage = makeResponsive(SpringGrid, { maxWidth: 1920 })
 
@@ -211,7 +212,9 @@ export default class Subjects extends React.Component<Props, State> {
                         {this.state.subjects.map((value) => {
                             return (
                                 <div key={value.id} className='text-center'>
-                                    <Link to={'/Subjects' + value.id}><span style={{ fontSize: '110px', paddingRight: '5px', paddingLeft: '5px' }} className='fas fa-book newSubject text-center'></span></Link>
+                                    <TooltipHost content='view your subject!' id='myID' calloutProps={{ gapSpace: 85 }}>
+                                        <Link to={'/Subjects' + value.id}><span style={{ fontSize: '110px', paddingRight: '5px', paddingLeft: '5px' }} className='fas fa-book newSubject text-center'></span></Link>
+                                    </TooltipHost>
                                     <span onClick={() => this.deleteSubject(value)} style={{ fontSize: '22px' }} className='trashCan far fa-trash-alt float-right text-center'></span>
                                     <h4 style={{ fontSize: '17px', color: '#244173', paddingTop: '15px', fontFamily: 'Montserrat', fontWeight: 'bold' }} className='text-center'>{value.subjectName}<span onClick={() => this.editSubject(value)} style={{ fontSize: '20px' }} className='editSubject far fa-edit'></span></h4>
                                 </div>

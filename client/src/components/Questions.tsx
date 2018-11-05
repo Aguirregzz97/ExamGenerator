@@ -6,12 +6,11 @@ import TopicStorage, { ITopicModel } from '../Shared/TopicStorage'
 import { SpringGrid, makeResponsive } from 'react-stonecutter'
 import swal from 'sweetalert2'
 import CurrentUserStorage from '../Shared/CurrentUserStorage'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import matchSorter from 'match-sorter'
 import QuestionStorage, { IQuestionModel, IPossibleAnswer } from '../Shared/QuestionStorage'
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
-import matchSorter from 'match-sorter'
 
 const GridPage = makeResponsive(SpringGrid, { maxWidth: 1920 })
 

@@ -13,6 +13,11 @@ $border-color: red;
   }
 }
 
+@page {
+  size: auto;
+  margin: 0.00000000000000001mm;
+}
+
 .navItem {
   color: white;
   transition: 1s;

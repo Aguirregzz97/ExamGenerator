@@ -7,6 +7,7 @@ import { TeachingBubble } from 'office-ui-fabric-react/lib/TeachingBubble'
 import { SpringGrid, makeResponsive } from 'react-stonecutter'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import swal from 'sweetalert2'
+import { TooltipHost } from 'office-ui-fabric-react/lib/Tooltip'
 
 
 const GridPage = makeResponsive(SpringGrid, { maxWidth: 1920 })
@@ -54,7 +55,7 @@ export default class Exams extends React.Component<Props, State> {
 
     createNewExam = async () => {
         const { value: examInput } = await swal({
-            title: 'Input Subject',
+            title: 'Input exam name',
             input: 'text',
             inputPlaceholder: 'Enter your new exam name!'
         })
@@ -187,14 +188,21 @@ export default class Exams extends React.Component<Props, State> {
                         <div>
                             <span className='ms-TeachingBubbleBasicExample-buttonArea'
                                 ref={menuButton => (this._menuButtonElement = menuButton!)}>
-                                <span onClick={this.createNewExam} style={{ fontSize: '110px' }} className='fas fa-plus-circle newSubject'></span>
+                                <TooltipHost content='New blank exam!' id='myID' calloutProps={{ gapSpace: 85 }}>
+                                    <span onClick={this.createNewExam} style={{ fontSize: '110px' }} className='fas fa-plus-circle newSubject'></span>
+                                </TooltipHost>
                             </span>
                             <h4 style={{ fontSize: '20px', color: '#244173', fontFamily: 'Montserrat', fontWeight: 'bold', paddingTop: '15px' }} className='text-center'>new</h4>
                         </div>
                         {this.state.exams.map((value) => {
                             return (
                                 <div key={value.id} className='text-center'>
-                                    <Link to={'/Exam' + value.id}><span style={{ fontSize: '110px', paddingRight: '5px', paddingLeft: '5px' }} className='fas fa-file-invoice newSubject text-center'></span></Link>
+                                    <TooltipHost content='Add questions to you exam!' id='myID' calloutProps={{ gapSpace: 85 }}>
+                                        <Link to={'/Exam' + value.id}><span style={{ fontSize: '110px', paddingRight: '15px', paddingLeft: '5px' }} className='far fa-question-circle newSubject text-center'></span></Link>
+                                    </TooltipHost>
+                                    <TooltipHost content='preview of you exam!' id='myID' calloutProps={{ gapSpace: 85 }}>
+                                        <Link to={'/ExPreview' + value.id}><span style={{ fontSize: '110px', paddingRight: '5px', paddingLeft: '5px' }} className='far fa-file-pdf newSubject text-center'></span></Link>
+                                    </TooltipHost>
                                     <span onClick={() => this.deleteExam(value)} style={{ fontSize: '22px' }} className='trashCan far fa-trash-alt float-right text-center'></span>
                                     <h4 style={{ fontSize: '17px', color: '#244173', paddingTop: '15px', fontFamily: 'Montserrat', fontWeight: 'bold' }} className='text-center'>{value.name}<span onClick={() => this.editExam(value)} style={{ fontSize: '20px' }} className='editSubject far fa-edit'></span></h4>
                                 </div>

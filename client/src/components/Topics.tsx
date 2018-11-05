@@ -7,7 +7,7 @@ import { SpringGrid, makeResponsive } from 'react-stonecutter'
 import swal from 'sweetalert2'
 import CurrentUserStorage from '../Shared/CurrentUserStorage'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-
+import { TooltipHost } from 'office-ui-fabric-react/lib/Tooltip'
 
 const GridPage = makeResponsive(SpringGrid, { maxWidth: 1920 })
 
@@ -181,7 +181,9 @@ export default class Topics extends React.Component<Props, State> {
                                 return (
                                     <div key={value.id} className='text-center'>
                                         <span onClick={() => this.deleteTopic(value)} style={{  fontSize: '22px' }} className='trashCan far fa-trash-alt float-right text-center'></span>
+                                            <TooltipHost content='view your topic!' id='myID' calloutProps={{ gapSpace: 85 }}>
                                             <Link to={'/Topics' + value.id}><span style={{ fontSize: '110px' }} className='fas fa-file-alt newTopic'></span></Link>
+                                            </TooltipHost>
                                         <h4 style={{ fontSize: '17px', color: '#244173', paddingTop: '15px', fontFamily: 'Montserrat', fontWeight: 'bold' }} className='text-center'>{value.topicName}<span onClick={() => this.editTopic(value)} style={{ fontSize: '20px' }} className='editSubject far fa-edit'></span></h4>
                                     </div>
                                 )
