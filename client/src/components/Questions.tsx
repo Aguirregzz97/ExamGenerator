@@ -31,7 +31,7 @@ type State = {
     currentQuestionModal: IQuestionModel
     isEditing: boolean,
     searchValue: string,
-    Variables: Variable[]
+    variables: Variable[]
 }
 
 interface MatchParams {
@@ -69,7 +69,7 @@ export default class Questions extends React.Component<Props, State> {
             currentQuestionModal: null,
             isEditing: false,
             searchValue: '',
-            Variables: []
+            variables: []
         }
     }
 
@@ -112,22 +112,28 @@ export default class Questions extends React.Component<Props, State> {
         let questionN: string = this.state.questionName
         for (let i = 0; i < questionN.length; i++) {
             if (questionN[i] === '#') {
-                let newVar: string = ''
+                let newVarName: string = ''
                 while (true) {
                     if (questionN[i] === '?' || questionN[i] === ' ' || questionN[i] === '.' || questionN[i] === ',') {
+                        for (const variable of this.state.variables) {
+                          if (variable.variableName === newVarName) {
+                            break
+                          }
+                        }
+                        
                         const variableToAdd: Variable = {
-                            variableName: newVar,
+                            variableName: newVarName,
                             lower: null,
                             upper: null
                         }
-                        const varArr = [...this.state.Variables, variableToAdd]
+                        const varArr = [...this.state.variables, variableToAdd]
                         this.setState({
-                            Variables: varArr
+                            variables: varArr
                         })
                         break
                     }
                     else {
-                        newVar += questionN[i]
+                        newVarName += questionN[i]
                         i++
                     }
                 }
