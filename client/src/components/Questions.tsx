@@ -14,12 +14,6 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 
 const GridPage = makeResponsive(SpringGrid, { maxWidth: 1920 })
 
-type Variable = {
-    variableName: string
-    lower: number
-    upper: number
-}
-
 type State = {
     currentUser: IUserModel
     questions: IQuestionModel[]
@@ -30,8 +24,7 @@ type State = {
     modal: boolean
     currentQuestionModal: IQuestionModel
     isEditing: boolean,
-    searchValue: string,
-    Variables: Variable[]
+    searchValue: string
 }
 
 interface MatchParams {
@@ -68,8 +61,7 @@ export default class Questions extends React.Component<Props, State> {
             modal: false,
             currentQuestionModal: null,
             isEditing: false,
-            searchValue: '',
-            Variables: []
+            searchValue: ''
         }
     }
 
@@ -108,30 +100,6 @@ export default class Questions extends React.Component<Props, State> {
             possibleAnswers: this.state.options,
             idTopic: this.state.currentTopic.id,
             questionName: this.state.questionName
-        }
-        let questionN: string = this.state.questionName
-        for (let i = 0; i < questionN.length; i++) {
-            if (questionN[i] === '#') {
-                let newVar: string = ''
-                while (true) {
-                    if (questionN[i] === '?' || questionN[i] === ' ' || questionN[i] === '.' || questionN[i] === ',') {
-                        const variableToAdd: Variable = {
-                            variableName: newVar,
-                            lower: null,
-                            upper: null
-                        }
-                        const varArr = [...this.state.Variables, variableToAdd]
-                        this.setState({
-                            Variables: varArr
-                        })
-                        break
-                    }
-                    else {
-                        newVar += questionN[i]
-                        i++
-                    }
-                }
-            }
         }
         const questionsUpdated: IQuestionModel[] = [...fullQuestions, questionToAdd]
         await QuestionStorage.storeQuestions(questionsUpdated, this.state.currentUser.id)
