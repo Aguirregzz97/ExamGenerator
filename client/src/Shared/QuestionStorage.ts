@@ -1,8 +1,16 @@
+export interface IVariableModel {
+    variableName: string
+    lowerBound: number
+    upperBound: number
+    variableValue?: number
+}
+
 export interface IQuestionModel {
     id: number
     possibleAnswers: IPossibleAnswer[]
     idTopic: number
     questionName: string
+    variables?: IVariableModel[]
 }
 
 export interface IPossibleAnswer {

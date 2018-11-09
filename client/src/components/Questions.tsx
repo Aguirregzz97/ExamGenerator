@@ -7,7 +7,7 @@ import { SpringGrid, makeResponsive } from 'react-stonecutter'
 import swal from 'sweetalert2'
 import CurrentUserStorage from '../Shared/CurrentUserStorage'
 import matchSorter from 'match-sorter'
-import QuestionStorage, { IQuestionModel, IPossibleAnswer } from '../Shared/QuestionStorage'
+import QuestionStorage, { IQuestionModel, IPossibleAnswer, IVariableModel } from '../Shared/QuestionStorage'
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
@@ -25,6 +25,7 @@ type State = {
     currentQuestionModal: IQuestionModel
     isEditing: boolean,
     searchValue: string
+    currentVariables: IVariableModel[]
 }
 
 interface MatchParams {
@@ -61,7 +62,8 @@ export default class Questions extends React.Component<Props, State> {
             modal: false,
             currentQuestionModal: null,
             isEditing: false,
-            searchValue: ''
+            searchValue: '',
+            currentVariables: []
         }
     }
 
@@ -99,7 +101,8 @@ export default class Questions extends React.Component<Props, State> {
             id: newQuestionID,
             possibleAnswers: this.state.options,
             idTopic: this.state.currentTopic.id,
-            questionName: this.state.questionName
+            questionName: this.state.questionName,
+            variables: this.state.currentVariables
         }
         const questionsUpdated: IQuestionModel[] = [...fullQuestions, questionToAdd]
         await QuestionStorage.storeQuestions(questionsUpdated, this.state.currentUser.id)
@@ -126,7 +129,7 @@ export default class Questions extends React.Component<Props, State> {
                 swal({
                     type: 'success',
                     title: 'Deleted!',
-                    text: 'Your subject ' + questionToDelete.questionName + ' has ben deleted',
+                    text: 'Your question ' + questionToDelete.questionName + ' has ben deleted',
                     timer: 1500,
                     showConfirmButton: false,
                     onClose: () => { window.location.reload() }
@@ -213,6 +216,21 @@ export default class Questions extends React.Component<Props, State> {
         })
     }
 
+    createVariable = () => {
+        let variableName: string = prompt('Enter you variable name, this name will automatically substitute in you question name or options!!!')
+        let lowerBound: number = Number(prompt('Enter your lower range for new variable'))
+        let upperBound: number = Number(prompt('Enter your upper range for new variable'))
+        const varToAdd: IVariableModel = {
+            variableName: variableName,
+            lowerBound: lowerBound,
+            upperBound: upperBound
+        }
+        const newVariables: IVariableModel[] = [...this.state.currentVariables, varToAdd]
+        this.setState({
+            currentVariables: newVariables
+        })
+    }
+
     private _showDialog = (): void => {
         this.setState({ hideDialog: false })
     }
@@ -257,7 +275,7 @@ export default class Questions extends React.Component<Props, State> {
                 </div>
                 <ul style={{ paddingTop: '20px' }} className='list-group'>
                     {
-                        matchSorter(this.state.questions, this.state.searchValue, {keys: ['questionName', 'possibleAnswers.0.answer', 'possibleAnswers.1.answer', 'possibleAnswers.2.answer', 'possibleAnswers.3.answer', ]}).map((element, index) => {
+                        matchSorter(this.state.questions, this.state.searchValue, { keys: ['questionName', 'possibleAnswers.0.answer', 'possibleAnswers.1.answer', 'possibleAnswers.2.answer', 'possibleAnswers.3.answer'] }).map((element, index) => {
                             if (this.state.currentTopic.id === element.idTopic) {
                                 return (
                                     <div key={element.id}>
@@ -292,35 +310,50 @@ export default class Questions extends React.Component<Props, State> {
                         title: this.state.isEditing ? 'Edit question' : 'Generate new question',
                     }}
                 >
-                    <div className=''>
-                        <form>
-                            <div className='form-group'>
-                                <h4 className='text-center'>Question:</h4>
-                                <input onChange={this.onChangeQuestionName} style={{ marginTop: '10px' }} type='text' className='form-control' placeholder='Enter question' defaultValue={this.state.isEditing ? this.state.currentQuestionModal.questionName : null} required />
-                                <div className='form-row'>
-                                    <div className='form-group col-8' style={{ marginTop: '40px' }}>
-                                        <input onChange={this.onChangeQuestionOptions(0)} type='text' className='form-control' placeholder='option#1' defaultValue={this.state.isEditing ? this.state.currentQuestionModal.possibleAnswers[0].answer : null} required />
+                    <div className='row'>
+                        <div className='col-9'>
+                            <div className=''>
+                                <form>
+                                    <div className='form-group'>
+                                        <h4 className='text-center'>Question:</h4>
+                                        <input onChange={this.onChangeQuestionName} style={{ marginTop: '10px' }} type='text' className='form-control' placeholder='Enter question' defaultValue={this.state.isEditing ? this.state.currentQuestionModal.questionName : null} required />
+                                        <div className='form-row'>
+                                            <div className='form-group col-8' style={{ marginTop: '40px' }}>
+                                                <input onChange={this.onChangeQuestionOptions(0)} type='text' className='form-control' placeholder='option#1' defaultValue={this.state.isEditing ? this.state.currentQuestionModal.possibleAnswers[0].answer : null} required />
+                                            </div>
+                                            <div style={{ paddingTop: '47px', color: 'black', fontWeight: 'bold' }} className='col-4'><span style={{ fontSize: '25px', color: 'green' }} className='fas fa-check'></span>  Correct Answer</div>
+                                            <div className='form-group col-8'>
+                                                <input onChange={this.onChangeQuestionOptions(1)} style={{ marginTop: '10px' }} type='text' className='form-control' placeholder='option#2' defaultValue={this.state.isEditing ? this.state.currentQuestionModal.possibleAnswers[1].answer : null} required />
+                                            </div>
+                                            <div className='form-group col-4'></div>
+                                            <div className='form-group col-8'>
+                                                <input onChange={this.onChangeQuestionOptions(2)} style={{ marginTop: '10px' }} type='text' className='form-control' placeholder='option#3' defaultValue={this.state.isEditing ? this.state.currentQuestionModal.possibleAnswers[2].answer : null} required />
+                                            </div>
+                                            <div className='form-group col-4'></div>
+                                            <div className='form-group col-8'>
+                                                <input onChange={this.onChangeQuestionOptions(3)} style={{ marginTop: '10px' }} type='text' className='form-control' placeholder='option#4' defaultValue={this.state.isEditing ? this.state.currentQuestionModal.possibleAnswers[3].answer : null} required />
+                                            </div>
+                                            <div className='form-group col-4'></div>
+                                        </div>
                                     </div>
-                                    <div style={{ paddingTop: '47px', color: 'black', fontWeight: 'bold' }} className='col-4'><span style={{ fontSize: '25px', color: 'green' }} className='fas fa-check'></span>  Correct Answer</div>
-                                    <div className='form-group col-8'>
-                                        <input onChange={this.onChangeQuestionOptions(1)} style={{ marginTop: '10px' }} type='text' className='form-control' placeholder='option#2' defaultValue={this.state.isEditing ? this.state.currentQuestionModal.possibleAnswers[1].answer : null} required />
+                                    <div className='text-center'>
+                                        <PrimaryButton type='submit' style={{ marginRight: '10px' }} onClick={this.state.isEditing ? this.submitEdit : this.createNewQuestion} text={this.state.isEditing ? 'Update' : 'Save'} />
+                                        <DefaultButton style={{ marginLeft: '10px' }} onClick={this._closeDialog} text='Cancel' />
                                     </div>
-                                    <div className='form-group col-4'></div>
-                                    <div className='form-group col-8'>
-                                        <input onChange={this.onChangeQuestionOptions(2)} style={{ marginTop: '10px' }} type='text' className='form-control' placeholder='option#3' defaultValue={this.state.isEditing ? this.state.currentQuestionModal.possibleAnswers[2].answer : null} required />
-                                    </div>
-                                    <div className='form-group col-4'></div>
-                                    <div className='form-group col-8'>
-                                        <input onChange={this.onChangeQuestionOptions(3)} style={{ marginTop: '10px' }} type='text' className='form-control' placeholder='option#4' defaultValue={this.state.isEditing ? this.state.currentQuestionModal.possibleAnswers[3].answer : null} required />
-                                    </div>
-                                    <div className='form-group col-4'></div>
-                                </div>
+                                </form>
                             </div>
-                            <div className='text-center'>
-                                <PrimaryButton type='submit' style={{ marginRight: '10px' }} onClick={this.state.isEditing ? this.submitEdit : this.createNewQuestion} text={this.state.isEditing ? 'Update' : 'Save'} />
-                                <DefaultButton style={{ marginLeft: '10px' }} onClick={this._closeDialog} text='Cancel' />
-                            </div>
-                        </form>
+                        </div>
+                        <div className='col-3 text-center'>
+                            <h5>Variables</h5>
+                            <span onClick={this.createVariable} style={{ fontSize: '40px', paddingBottom: '10px' }} className='fas fa-plus-circle newQuestion'></span>
+                            {this.state.currentVariables.map((element) => {
+                                return (
+                                    <div>
+                                        <h5>{element.variableName} ( {element.lowerBound} , {element.upperBound} )</h5>
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
                 </Dialog>
             </div>

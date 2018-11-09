@@ -120,9 +120,13 @@ export default class ExamPreview extends React.Component<Props, State> {
                                             possibleAnswer3 = possibleAnswer3.replace(variable.variableName.toString(), variable.variableValue.toString())
                                         }
                                     }
+                                // tslint:disable-next-line:no-eval
                                 possibleAnswer0 = eval(possibleAnswer0)
+                                // tslint:disable-next-line:no-eval
                                 possibleAnswer1 = eval(possibleAnswer1)
+                                // tslint:disable-next-line:no-eval
                                 possibleAnswer2 = eval(possibleAnswer2)
+                                // tslint:disable-next-line:no-eval
                                 possibleAnswer3 = eval(possibleAnswer3)
                                 return (
                                     <div key={element.id}>
