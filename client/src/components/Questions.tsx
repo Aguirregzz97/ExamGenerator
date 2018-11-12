@@ -176,7 +176,8 @@ export default class Questions extends React.Component<Props, State> {
             id: this.state.currentQuestionModal.id,
             possibleAnswers: this.state.options,
             idTopic: this.state.currentQuestionModal.idTopic,
-            questionName: this.state.questionName
+            questionName: this.state.questionName,
+            variables: this.state.currentVariables
         }
         for (let i = 0; i < this.state.questions.length; i++) {
             if (this.state.currentQuestionModal.id === this.state.questions[i].id) {

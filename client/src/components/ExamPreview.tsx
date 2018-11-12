@@ -3,12 +3,15 @@ import './../assets/scss/App.scss'
 import ExamStorage, { IExamsModel } from '../Shared/ExamStorage'
 import { IUserModel } from '../Shared/UserStorage'
 import CurrentUserStorage from '../Shared/CurrentUserStorage'
+import { IQuestionModel } from '../Shared/QuestionStorage'
+import swal from 'sweetalert2'
 
 
 type State = {
     currentUser: IUserModel
     exams: IExamsModel[]
     currentExam: IExamsModel
+    showButtons: boolean
 }
 
 interface MatchParams {
@@ -64,7 +67,63 @@ export default class ExamPreview extends React.Component<Props, State> {
             currentUser: null,
             exams: [],
             currentExam: null,
+            showButtons: true
         }
+    }
+
+    buttonPrint = () => {
+        if (this.state.showButtons) {
+            return (
+                <div className='text-center'>
+                    <button style={{marginBottom: '50px'}} onClick={this.clickPrint} className='btn btn-primary text-center'>print / save</button>
+                </div>
+            )
+        }
+    }
+
+    clickPrint = () => {
+        this.setState({
+            showButtons: false
+        }, async () => {
+            await window.print()
+            this.setState({
+                showButtons: true
+            })
+        })
+    }
+
+    deleteQuestion = (questionToDelete: IQuestionModel) => {
+        swal({
+            title: 'Are you sure?',
+            text: 'You wont be able to revert this!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                for (let i = 0; i < this.state.exams.length; i++) {
+                    if (this.state.exams[i].id === this.state.currentExam.id) {
+                        for (let j = 0; j < this.state.currentExam.questions.length; j++) {
+                            if (questionToDelete.id === this.state.currentExam.questions[j].id) {
+                                this.state.exams[i].questions.splice(j, 1)
+                                break
+                            }
+                        }
+                    }
+                }
+                ExamStorage.storeExams(this.state.exams, this.state.currentUser.id)
+                swal({
+                    type: 'success',
+                    title: 'Deleted!',
+                    text: 'Your question ' + questionToDelete.questionName + ' has ben deleted',
+                    timer: 500,
+                    showConfirmButton: false,
+                    onClose: () => { window.location.reload() }
+                })
+            }
+        })
     }
 
 
@@ -107,7 +166,7 @@ export default class ExamPreview extends React.Component<Props, State> {
                                 }
                                 return (
                                     <div key={element.id}>
-                                        <h5>{questionNumber}) {element.questionName}</h5>
+                                        <h5>{questionNumber}) {element.questionName} {this.state.showButtons ? <span onClick={() => this.deleteQuestion(element)} className='fas fa-trash-alt float-right trashExamPreview'></span> : null} </h5>
                                         <h5>a) {element.possibleAnswers[shuffleArray[0]].answer}</h5>
                                         <h5>b) {element.possibleAnswers[shuffleArray[1]].answer}</h5>
                                         <h5>c) {element.possibleAnswers[shuffleArray[2]].answer}</h5>
@@ -152,7 +211,7 @@ export default class ExamPreview extends React.Component<Props, State> {
                                 possibleAnswer3 = eval(possibleAnswer3)
                                 return (
                                     <div key={element.id}>
-                                        <h5>{questionNumber}) {replacedQuestionName}</h5>
+                                        <h5>{questionNumber}) {replacedQuestionName} {this.state.showButtons ? <span onClick={() => this.deleteQuestion(element)} className='fas fa-trash-alt float-right trashExamPreview'></span> : null} </h5>
                                         <h5>a) {possibleAnswer0}</h5>
                                         <h5>b) {possibleAnswer1}</h5>
                                         <h5>c) {possibleAnswer2}</h5>
@@ -164,6 +223,7 @@ export default class ExamPreview extends React.Component<Props, State> {
                         })}
                     </div>
                 </div>
+                {this.buttonPrint()}
             </div>
         )
     }

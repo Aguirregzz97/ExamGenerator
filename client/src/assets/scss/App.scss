@@ -173,3 +173,15 @@ $border-color: red;
   cursor: pointer;
   color: blue;
 }
+
+.trashExamPreview {
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 22px;
+  transition: 0.1s;
+}
+
+.trashExamPreview:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+  color: red;
+}
