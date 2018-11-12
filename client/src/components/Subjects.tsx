@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import TopicStorage, { ITopicModel } from '../Shared/TopicStorage'
 import { TeachingBubble } from 'office-ui-fabric-react/lib/TeachingBubble'
 import { TooltipHost } from 'office-ui-fabric-react/lib/Tooltip'
+import QuestionStorage, { IQuestionModel } from '../Shared/QuestionStorage'
 
 const GridPage = makeResponsive(SpringGrid, { maxWidth: 1920 })
 
@@ -18,6 +19,7 @@ type State = {
     currentUser: IUserModel
     subjects: ISubjectModel[]
     topics: ITopicModel[]
+    questions: IQuestionModel[]
     isTeachingBubbleVissible: boolean,
 }
 
@@ -32,6 +34,7 @@ export default class Subjects extends React.Component<Props, State> {
             currentUser: null,
             subjects: null,
             topics: null,
+            questions: null,
             isTeachingBubbleVissible: false,
         }
     }
@@ -46,10 +49,12 @@ export default class Subjects extends React.Component<Props, State> {
         }
         const currentSubjectsC: ISubjectModel[] = await SubjectStorage.getSubjects(currentUserC.id)
         const currentTopicsC: ITopicModel[] = await TopicStorage.getTopics(currentUserC.id)
+        const currentQuestionsC: IQuestionModel[] = await QuestionStorage.getQuestions(currentUserC.id)
         this.setState({
             currentUser: currentUserC,
             subjects: currentSubjectsC,
-            topics: currentTopicsC
+            topics: currentTopicsC,
+            questions: currentQuestionsC
         })
         if (currentSubjectsC.length === 0) {
             this.setState({
@@ -104,11 +109,20 @@ export default class Subjects extends React.Component<Props, State> {
                     let offset: number = 0
                     for (let i = 0; i < size; i++) {
                         if (this.state.topics[i - offset].idSubject === subject.id) {
+                            let offsetQuestions: number = 0
+                            let sizeQuestions: number = this.state.questions.length
+                            for (let j = 0; j < sizeQuestions; j++) {
+                                if (this.state.questions[j - offsetQuestions].idTopic === this.state.topics[i - offset].id) {
+                                    this.state.questions.splice(j - offsetQuestions, 1)
+                                    offsetQuestions++
+                                }
+                            }
                             this.state.topics.splice(i - offset, 1)
                             offset++
                         }
                     }
                     TopicStorage.storeTopics(this.state.topics, this.state.currentUser.id)
+                    QuestionStorage.storeQuestions(this.state.questions, this.state.currentUser.id)
                     this.state.subjects.forEach((element, index) => {
                         if (subject.id === element.id) {
                             this.state.subjects.splice(index, 1)

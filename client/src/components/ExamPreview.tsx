@@ -91,35 +91,57 @@ export default class ExamPreview extends React.Component<Props, State> {
                     <h5>ID: _____________________________________________________________________</h5>
                     <h5>Professor: _____________________________________________________________</h5>
                     <div style={{ paddingTop: '40px' }}>
-                        {this.state.currentExam.questions.map((element, i: number = 1) => {
-                            {i++}
+                        {this.state.currentExam.questions.map((element, questionNumber: number = 1) => {
+                            { questionNumber++ }
                             if (element.variables.length === 0) {
+                                let shuffleArray: number[] = [0, 1, 2, 3]
+                                let i = shuffleArray.length,
+                                    j = 0,
+                                    temp
+                                while (i--) {
+                                    j = Math.floor(Math.random() * (i + 1))
+                                    // swap randomly chosen element with current element
+                                    temp = shuffleArray[i]
+                                    shuffleArray[i] = shuffleArray[j]
+                                    shuffleArray[j] = temp
+                                }
                                 return (
                                     <div key={element.id}>
-                                        <h5>{i}) {element.questionName}</h5>
-                                        <h5>a) {element.possibleAnswers[0].answer}</h5>
-                                        <h5>b) {element.possibleAnswers[1].answer}</h5>
-                                        <h5>c) {element.possibleAnswers[2].answer}</h5>
-                                        <h5>d) {element.possibleAnswers[3].answer}</h5>
-                                        <hr/>
+                                        <h5>{questionNumber}) {element.questionName}</h5>
+                                        <h5>a) {element.possibleAnswers[shuffleArray[0]].answer}</h5>
+                                        <h5>b) {element.possibleAnswers[shuffleArray[1]].answer}</h5>
+                                        <h5>c) {element.possibleAnswers[shuffleArray[2]].answer}</h5>
+                                        <h5>d) {element.possibleAnswers[shuffleArray[3]].answer}</h5>
+                                        <hr />
                                     </div>
                                 )
                             }
                             else {
+                                let shuffleArray: number[] = [0, 1, 2, 3]
+                                let i = shuffleArray.length,
+                                    j = 0,
+                                    temp
+                                while (i--) {
+                                    j = Math.floor(Math.random() * (i + 1))
+                                    // swap randomly chosen element with current element
+                                    temp = shuffleArray[i]
+                                    shuffleArray[i] = shuffleArray[j]
+                                    shuffleArray[j] = temp
+                                }
                                 let replacedQuestionName: string = element.questionName
-                                let possibleAnswer0: string = element.possibleAnswers[0].answer
-                                let possibleAnswer1: string = element.possibleAnswers[1].answer
-                                let possibleAnswer2: string = element.possibleAnswers[2].answer
-                                let possibleAnswer3: string = element.possibleAnswers[3].answer
-                                    for (const variable of element.variables) {
-                                        while (replacedQuestionName.includes(variable.variableName) || possibleAnswer0.includes(variable.variableName) || possibleAnswer1.includes(variable.variableName) || possibleAnswer2.includes(variable.variableName) || possibleAnswer3.includes(variable.variableName)) {
-                                            replacedQuestionName = replacedQuestionName.replace(variable.variableName.toString(), variable.variableValue.toString())
-                                            possibleAnswer0 = possibleAnswer0.replace(variable.variableName.toString(), variable.variableValue.toString())
-                                            possibleAnswer1 = possibleAnswer1.replace(variable.variableName.toString(), variable.variableValue.toString())
-                                            possibleAnswer2 = possibleAnswer2.replace(variable.variableName.toString(), variable.variableValue.toString())
-                                            possibleAnswer3 = possibleAnswer3.replace(variable.variableName.toString(), variable.variableValue.toString())
-                                        }
+                                let possibleAnswer0: string = element.possibleAnswers[shuffleArray[0]].answer
+                                let possibleAnswer1: string = element.possibleAnswers[shuffleArray[1]].answer
+                                let possibleAnswer2: string = element.possibleAnswers[shuffleArray[2]].answer
+                                let possibleAnswer3: string = element.possibleAnswers[shuffleArray[3]].answer
+                                for (const variable of element.variables) {
+                                    while (replacedQuestionName.includes(variable.variableName) || possibleAnswer0.includes(variable.variableName) || possibleAnswer1.includes(variable.variableName) || possibleAnswer2.includes(variable.variableName) || possibleAnswer3.includes(variable.variableName)) {
+                                        replacedQuestionName = replacedQuestionName.replace(variable.variableName.toString(), variable.variableValue.toString())
+                                        possibleAnswer0 = possibleAnswer0.replace(variable.variableName.toString(), variable.variableValue.toString())
+                                        possibleAnswer1 = possibleAnswer1.replace(variable.variableName.toString(), variable.variableValue.toString())
+                                        possibleAnswer2 = possibleAnswer2.replace(variable.variableName.toString(), variable.variableValue.toString())
+                                        possibleAnswer3 = possibleAnswer3.replace(variable.variableName.toString(), variable.variableValue.toString())
                                     }
+                                }
                                 // tslint:disable-next-line:no-eval
                                 possibleAnswer0 = eval(possibleAnswer0)
                                 // tslint:disable-next-line:no-eval
@@ -130,12 +152,12 @@ export default class ExamPreview extends React.Component<Props, State> {
                                 possibleAnswer3 = eval(possibleAnswer3)
                                 return (
                                     <div key={element.id}>
-                                        <h5>{i}) {replacedQuestionName}</h5>
+                                        <h5>{questionNumber}) {replacedQuestionName}</h5>
                                         <h5>a) {possibleAnswer0}</h5>
                                         <h5>b) {possibleAnswer1}</h5>
                                         <h5>c) {possibleAnswer2}</h5>
                                         <h5>d) {possibleAnswer3}</h5>
-                                        <hr/>
+                                        <hr />
                                     </div>
                                 )
                             }

@@ -164,7 +164,8 @@ export default class Questions extends React.Component<Props, State> {
             isEditing: true,
             currentQuestionModal: questionToEdit,
             options: newOptionFinal,
-            questionName: questionToEdit.questionName
+            questionName: questionToEdit.questionName,
+            currentVariables: questionToEdit.variables ? questionToEdit.variables : []
         }, async () => {
             await this._showDialog()
         })
@@ -303,6 +304,7 @@ export default class Questions extends React.Component<Props, State> {
                 <Dialog
                     hidden={this.state.hideDialog}
                     onDismiss={this._closeDialog}
+                    onDismissed={() => {this.setState({isEditing: false})}}
                     minWidth={'600px'}
                     maxWidth={'1000px'}
                     dialogContentProps={{
