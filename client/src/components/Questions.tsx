@@ -49,7 +49,6 @@ export interface match<P> {
 }
 
 export default class Questions extends React.Component<Props, State> {
-
     constructor(props) {
         super(props)
         this.state = {
@@ -305,7 +304,7 @@ export default class Questions extends React.Component<Props, State> {
                 <Dialog
                     hidden={this.state.hideDialog}
                     onDismiss={this._closeDialog}
-                    onDismissed={() => {this.setState({isEditing: false})}}
+                    onDismissed={() => {this.setState({isEditing: false, currentVariables: []})}}
                     minWidth={'600px'}
                     maxWidth={'1000px'}
                     dialogContentProps={{
