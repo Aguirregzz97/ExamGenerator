@@ -104,7 +104,7 @@ export default class Exams extends React.Component<Props, State> {
                             swal({
                                 type: 'success',
                                 title: 'Deleted!',
-                                text: 'Your subject ' + examToDelete.name + ' has ben deleted',
+                                text: 'Your exam ' + examToDelete.name + ' has ben deleted',
                                 timer: 1500,
                                 showConfirmButton: false,
                                 onClose: () => { window.location.reload() }
