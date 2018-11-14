@@ -132,7 +132,7 @@ export default class Topics extends React.Component<Props, State> {
                             swal({
                                 type: 'success',
                                 title: 'Deleted!',
-                                text: 'Your subject ' + topicToDelete.topicName + ' has ben deleted',
+                                text: 'Your topic ' + topicToDelete.topicName + ' has ben deleted',
                                 timer: 1500,
                                 showConfirmButton: false,
                                 onClose: () => { window.location.reload() }

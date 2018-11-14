@@ -125,12 +125,13 @@ export default class Exams extends React.Component<Props, State> {
         if (examInput) {
             this.state.exams.forEach((element) => {
                 if (element.id === examToEdit.id) {
+                    let oldExamName: string = element.name
                     element.name = examInput
                     ExamStorage.storeExams(this.state.exams, this.state.currentUser.id)
                     swal({
                         type: 'success',
                         title: 'succesfully chnaged exam name',
-                        text: 'Your exam ' + examToEdit.name + ' has been edited to ' + examInput,
+                        text: 'Your exam ' + oldExamName + ' has been edited to ' + examInput,
                         timer: 1500,
                         showConfirmButton: false,
                         onClose: () => { window.location.reload() }
