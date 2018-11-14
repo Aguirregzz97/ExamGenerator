@@ -167,10 +167,10 @@ export default class ExamPreview extends React.Component<Props, State> {
                                 return (
                                     <div key={element.id}>
                                         <h5>{questionNumber}) {element.questionName} {this.state.showButtons ? <span onClick={() => this.deleteQuestion(element)} className='fas fa-trash-alt float-right trashExamPreview'></span> : null} </h5>
-                                        <h5>a) {element.possibleAnswers[shuffleArray[0]].answer}</h5>
-                                        <h5>b) {element.possibleAnswers[shuffleArray[1]].answer}</h5>
-                                        <h5>c) {element.possibleAnswers[shuffleArray[2]].answer}</h5>
-                                        <h5>d) {element.possibleAnswers[shuffleArray[3]].answer}</h5>
+                                        <h5>a) {element.possibleAnswers[shuffleArray[0]].answer} {this.state.showButtons ? element.possibleAnswers[shuffleArray[0]].isCorrect ? <span className='fas fa-check checkPrev'></span> : null : null}</h5>
+                                        <h5>b) {element.possibleAnswers[shuffleArray[1]].answer} {this.state.showButtons ? element.possibleAnswers[shuffleArray[1]].isCorrect ? <span className='fas fa-check checkPrev'></span> : null : null}</h5>
+                                        <h5>c) {element.possibleAnswers[shuffleArray[2]].answer} {this.state.showButtons ? element.possibleAnswers[shuffleArray[2]].isCorrect ? <span className='fas fa-check checkPrev'></span> : null : null}</h5>
+                                        <h5>d) {element.possibleAnswers[shuffleArray[3]].answer} {this.state.showButtons ? element.possibleAnswers[shuffleArray[3]].isCorrect ? <span className='fas fa-check checkPrev'></span> : null : null}</h5>
                                         <hr />
                                     </div>
                                 )
@@ -212,10 +212,10 @@ export default class ExamPreview extends React.Component<Props, State> {
                                 return (
                                     <div key={element.id}>
                                         <h5>{questionNumber}) {replacedQuestionName} {this.state.showButtons ? <span onClick={() => this.deleteQuestion(element)} className='fas fa-trash-alt float-right trashExamPreview'></span> : null} </h5>
-                                        <h5>a) {possibleAnswer0}</h5>
-                                        <h5>b) {possibleAnswer1}</h5>
-                                        <h5>c) {possibleAnswer2}</h5>
-                                        <h5>d) {possibleAnswer3}</h5>
+                                        <h5>a) {possibleAnswer0} {this.state.showButtons ? element.possibleAnswers[shuffleArray[0]].isCorrect ? <span className='fas fa-check checkPrev'></span> : null : null}</h5>
+                                        <h5>b) {possibleAnswer1} {this.state.showButtons ? element.possibleAnswers[shuffleArray[1]].isCorrect ? <span className='fas fa-check checkPrev'></span> : null : null}</h5>
+                                        <h5>c) {possibleAnswer2} {this.state.showButtons ? element.possibleAnswers[shuffleArray[2]].isCorrect ? <span className='fas fa-check checkPrev'></span> : null : null}</h5>
+                                        <h5>d) {possibleAnswer3} {this.state.showButtons ? element.possibleAnswers[shuffleArray[3]].isCorrect ? <span className='fas fa-check checkPrev'></span> : null : null}</h5>
                                         <hr />
                                     </div>
                                 )
