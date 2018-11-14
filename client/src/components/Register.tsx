@@ -67,6 +67,17 @@ export default class Register extends React.Component<Props, State> {
             })
             return
         }
+        for (const user of this.state.users) {
+            if (user.username === this.state.username || user.password === this.state.password) {
+                swal({
+                    type: 'error',
+                    title: 'The username or password you entered is already taken :(',
+                    showConfirmButton: false,
+                    timer: 1500,
+                })
+                return
+            }
+        }
         let newID: number = 0
         this.state.users.forEach(element => {
             if (element.id >= newID) {
