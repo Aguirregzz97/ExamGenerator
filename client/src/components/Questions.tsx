@@ -293,9 +293,9 @@ export default class Questions extends React.Component<Props, State> {
                     <ModalHeader toggle={this.toggle}>{this.state.currentQuestionModal ? this.state.currentQuestionModal.questionName : null}</ModalHeader>
                     <ModalBody>
                         <h5>a) {this.state.currentQuestionModal ? this.state.currentQuestionModal.possibleAnswers[0].answer : null}</h5>
-                        <h5>a) {this.state.currentQuestionModal ? this.state.currentQuestionModal.possibleAnswers[1].answer : null}</h5>
-                        <h5>a) {this.state.currentQuestionModal ? this.state.currentQuestionModal.possibleAnswers[2].answer : null}</h5>
-                        <h5>a) {this.state.currentQuestionModal ? this.state.currentQuestionModal.possibleAnswers[3].answer : null}</h5>
+                        <h5>b) {this.state.currentQuestionModal ? this.state.currentQuestionModal.possibleAnswers[1].answer : null}</h5>
+                        <h5>c) {this.state.currentQuestionModal ? this.state.currentQuestionModal.possibleAnswers[2].answer : null}</h5>
+                        <h5>d) {this.state.currentQuestionModal ? this.state.currentQuestionModal.possibleAnswers[3].answer : null}</h5>
                     </ModalBody>
                     <ModalFooter>
                         <Button color='danger' onClick={this.toggle}>Exit</Button>

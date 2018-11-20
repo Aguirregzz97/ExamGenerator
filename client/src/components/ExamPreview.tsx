@@ -78,7 +78,7 @@ export default class ExamPreview extends React.Component<Props, State> {
         if (this.state.showButtons) {
             return (
                 <div className='text-center'>
-                    <button style={{marginTop: '20px'}} onClick={this.clickPrint} className='btn btn-primary text-center'>print / save</button>
+                    <button style={{ marginTop: '20px' }} onClick={this.clickPrint} className='btn btn-primary text-center'>print / save</button>
                 </div>
             )
         }
@@ -89,7 +89,7 @@ export default class ExamPreview extends React.Component<Props, State> {
         if (this.state.showButtons) {
             return (
                 <div className='text-center'>
-                    <button style={{marginTop: '20px', marginBottom: '50px'}} onClick={this.clickAnswerSheet} className='btn btn-success text-center'>Answer Sheet</button>
+                    <button style={{ marginTop: '20px', marginBottom: '50px' }} onClick={this.clickAnswerSheet} className='btn btn-success text-center'>Answer Sheet</button>
                 </div>
             )
         }
@@ -290,8 +290,16 @@ export default class ExamPreview extends React.Component<Props, State> {
                         })}
                     </div>
                 </div>
-                {this.buttonPrint()}
-                {this.buttonAnswerSheet(currentAnswers)}
+                <div className='row'>
+                    <div className='col-4'></div>
+                    <div className='col-2'>
+                        {this.buttonPrint()}
+                    </div>
+                    <div className='col-2'>
+                        {this.buttonAnswerSheet(currentAnswers)}
+                    </div>
+                    <div className='col-4'></div>
+                </div>
             </div>
         )
     }

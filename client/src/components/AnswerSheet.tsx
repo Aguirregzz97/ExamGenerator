@@ -30,7 +30,7 @@ export default class AnswerSheet extends React.Component<Props, State> {
         if (this.state.showButtons) {
             return (
                 <div className='text-center'>
-                    <button style={{ marginTop: '30px' }} onClick={this.clickPrint} className='btn btn-primary text-center'>print / save</button>
+                    <button style={{ marginTop: '30px', marginBottom: '40px' }} onClick={this.clickPrint} className='btn btn-primary text-center'>print / save</button>
                 </div>
             )
         }
