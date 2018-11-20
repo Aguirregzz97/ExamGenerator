@@ -48,7 +48,7 @@ export default class GetStarted extends React.Component<Props, State> {
                     <i style={{ color: 'white', fontSize: '120px', paddingTop: '40px', marginBottom: '20px' }} className='fas fa-chalkboard-teacher'></i>
                     <h1 style={{ color: 'white', fontFamily: 'Montserrat', fontSize: '33px', fontWeight: 'bold' }} className='text-center'>Generating exams has never been easier</h1>
                     <div className='text-center'>
-                        <button onClick={this.getStarted} className='text-center btnBackBlue'>Start!</button>
+                       {this.state.currentUser !== undefined ? <Link to='/Exams'><button className='text-center btnBackBlue'>Start!</button></Link> : <Link to='/Login'><button className='text-center btnBackBlue'>Start!</button></Link>}
                     </div>
                 </div>
                 <div style={{ paddingBottom: '50px' }} >

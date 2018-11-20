@@ -20,6 +20,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 type State = {
     isOpen: boolean
     currentUserLoggedIn: IUserModel
+    url: string
 }
 
 type Props = {
@@ -31,14 +32,16 @@ export default class NavbarC extends React.Component<Props, State> {
         super(props)
         this.state = {
             isOpen: false,
-            currentUserLoggedIn: null
+            currentUserLoggedIn: null,
+            url: ''
         }
     }
 
     async componentDidMount() {
         const currentUser: IUserModel = await CurrentUserStorage.getUser()
         this.setState({
-            currentUserLoggedIn: currentUser
+            currentUserLoggedIn: currentUser,
+            url: window.location.href
         })
     }
 
@@ -78,17 +81,17 @@ export default class NavbarC extends React.Component<Props, State> {
                 </UncontrolledDropdown>
         }
         return (
-            <div style={{ backgroundColor: 'black' }}>
-                <Navbar expand='md'>
+            <div style={{ }}>
+                <Navbar style={{backgroundColor: 'black'}}  expand='md'>
                 <Link style={{ fontFamily: 'Montserrat', fontSize: '25px' }} className='navItem nav-link' to='/'>GENEVAL<i style={{ fontSize: '30px', paddingLeft: '10px' }} className='fas fa-scroll'></i></Link>
-                    <NavbarToggler className='whiteColor' onClick={this.toggle} />
+                    <NavbarToggler style={{ fontFamily: 'Montserrat', borderColor: 'white'}} className='nav-item' onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className='ml-auto' navbar>
                             <NavItem>
-                            <Link style={{ fontFamily: 'Montserrat' }} className='navItem nav-link' to='/Exams'>EXAMS</Link>
+                            <Link style={{ fontFamily: 'Montserrat', backgroundColor: this.state.url.includes('Exams') ?  '#0056b3' : '', borderRadius: '4px' }} className='navItem nav-link' to='/Exams'>EXAMS</Link>
                             </NavItem>
                             <NavItem>
-                                <Link style={{ fontFamily: 'Montserrat' }} className='navItem nav-link' to='/Subjects'>CREATE-QUESTIONS</Link>
+                                <Link style={{ fontFamily: 'Montserrat', backgroundColor: this.state.url.includes('Subjects') || this.state.url.includes('Topics') ?  '#0056b3' : '', borderRadius: '4px' }} className='navItem nav-link' to='/Subjects'>CREATE-QUESTIONS</Link>
                             </NavItem>
                             {userBlock}
                         </Nav>
