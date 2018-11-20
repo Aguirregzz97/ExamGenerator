@@ -12,6 +12,7 @@ import User from './User'
 import Questions from './Questions'
 import InsideExam from './InsideExam'
 import ExamPreview from './ExamPreview'
+import AnswerSheet from './AnswerSheet'
 
 
 
@@ -35,6 +36,7 @@ const Main = () => (
       <Route path='/Topics:id' component={Questions} />
       <Route path='/Exam:id' component={InsideExam} />
       <Route path='/ExPreview:id' component={ExamPreview}/>
+      <Route path='/AnswerSheet' component={AnswerSheet}/>
     </Switch>
   </main>
 )

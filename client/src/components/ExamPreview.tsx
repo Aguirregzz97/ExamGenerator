@@ -5,6 +5,7 @@ import { IUserModel } from '../Shared/UserStorage'
 import CurrentUserStorage from '../Shared/CurrentUserStorage'
 import { IQuestionModel } from '../Shared/QuestionStorage'
 import swal from 'sweetalert2'
+import CurrentAnswerSheetStorage, { IAnswerSheet } from '../Shared/AnswerSheetStorage'
 
 
 type State = {
@@ -12,6 +13,7 @@ type State = {
     exams: IExamsModel[]
     currentExam: IExamsModel
     showButtons: boolean
+    currentAnswers: IAnswerSheet[]
 }
 
 interface MatchParams {
@@ -67,7 +69,8 @@ export default class ExamPreview extends React.Component<Props, State> {
             currentUser: null,
             exams: [],
             currentExam: null,
-            showButtons: true
+            showButtons: true,
+            currentAnswers: []
         }
     }
 
@@ -75,10 +78,25 @@ export default class ExamPreview extends React.Component<Props, State> {
         if (this.state.showButtons) {
             return (
                 <div className='text-center'>
-                    <button style={{marginBottom: '50px'}} onClick={this.clickPrint} className='btn btn-primary text-center'>print / save</button>
+                    <button style={{marginTop: '20px'}} onClick={this.clickPrint} className='btn btn-primary text-center'>print / save</button>
                 </div>
             )
         }
+    }
+
+    buttonAnswerSheet = (answers: IAnswerSheet[]) => {
+        CurrentAnswerSheetStorage.storeCurrentAnswerSheet(answers)
+        if (this.state.showButtons) {
+            return (
+                <div className='text-center'>
+                    <button style={{marginTop: '20px', marginBottom: '50px'}} onClick={this.clickAnswerSheet} className='btn btn-success text-center'>Answer Sheet</button>
+                </div>
+            )
+        }
+    }
+
+    clickAnswerSheet = () => {
+        window.open('AnswerSheet')
     }
 
     clickPrint = () => {
@@ -128,6 +146,7 @@ export default class ExamPreview extends React.Component<Props, State> {
 
 
     render() {
+        let currentAnswers: IAnswerSheet[] = []
         let today: any = new Date()
         let dd = today.getDate()
         let mm = today.getMonth() + 1
@@ -163,6 +182,30 @@ export default class ExamPreview extends React.Component<Props, State> {
                                     temp = shuffleArray[i]
                                     shuffleArray[i] = shuffleArray[j]
                                     shuffleArray[j] = temp
+                                }
+                                if (element.possibleAnswers[shuffleArray[0]].isCorrect) {
+                                    let currentAnswer: IAnswerSheet = {
+                                        answer: 'a'
+                                    }
+                                    currentAnswers.push(currentAnswer)
+                                }
+                                if (element.possibleAnswers[shuffleArray[1]].isCorrect) {
+                                    let currentAnswer: IAnswerSheet = {
+                                        answer: 'b'
+                                    }
+                                    currentAnswers.push(currentAnswer)
+                                }
+                                if (element.possibleAnswers[shuffleArray[2]].isCorrect) {
+                                    let currentAnswer: IAnswerSheet = {
+                                        answer: 'c'
+                                    }
+                                    currentAnswers.push(currentAnswer)
+                                }
+                                if (element.possibleAnswers[shuffleArray[3]].isCorrect) {
+                                    let currentAnswer: IAnswerSheet = {
+                                        answer: 'd'
+                                    }
+                                    currentAnswers.push(currentAnswer)
                                 }
                                 return (
                                     <div key={element.id}>
@@ -201,6 +244,30 @@ export default class ExamPreview extends React.Component<Props, State> {
                                         possibleAnswer3 = possibleAnswer3.replace(variable.variableName.toString(), variable.variableValue.toString())
                                     }
                                 }
+                                if (element.possibleAnswers[shuffleArray[0]].isCorrect) {
+                                    let currentAnswer: IAnswerSheet = {
+                                        answer: 'a'
+                                    }
+                                    currentAnswers.push(currentAnswer)
+                                }
+                                if (element.possibleAnswers[shuffleArray[1]].isCorrect) {
+                                    let currentAnswer: IAnswerSheet = {
+                                        answer: 'b'
+                                    }
+                                    currentAnswers.push(currentAnswer)
+                                }
+                                if (element.possibleAnswers[shuffleArray[2]].isCorrect) {
+                                    let currentAnswer: IAnswerSheet = {
+                                        answer: 'c'
+                                    }
+                                    currentAnswers.push(currentAnswer)
+                                }
+                                if (element.possibleAnswers[shuffleArray[3]].isCorrect) {
+                                    let currentAnswer: IAnswerSheet = {
+                                        answer: 'd'
+                                    }
+                                    currentAnswers.push(currentAnswer)
+                                }
                                 // tslint:disable-next-line:no-eval
                                 possibleAnswer0 = eval(possibleAnswer0)
                                 // tslint:disable-next-line:no-eval
@@ -224,6 +291,7 @@ export default class ExamPreview extends React.Component<Props, State> {
                     </div>
                 </div>
                 {this.buttonPrint()}
+                {this.buttonAnswerSheet(currentAnswers)}
             </div>
         )
     }
